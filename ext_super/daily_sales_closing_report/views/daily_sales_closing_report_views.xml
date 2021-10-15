@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- daily.sales tree view -->
+    <record id="daily_sales_view_tree" model="ir.ui.view">
+        <field name="name">daily.sales.view.tree</field>
+        <field name="model">daily.sales</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!-- Add your fields here -->
+                <field name="name" optional="show"/>
+                <field name="invoice_num" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="currency_rate" optional="show"/>
+                <field name="total_bs" optional="show"/>
+                <field name="total_usd" optional="show"/>
+                <field name="payment_condition_id" optional="show"/>
+                <field name="amount" optional="show"/>
+                <field name="currency_id" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="daily_sales_action" model="ir.actions.act_window">
+        <field name="name">Daily Sales Closing Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">daily.sales</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- account.payment.method inherit form view -->
+    <record id="modo_pagos_view_form" model="ir.ui.view">
+        <field name="name">account.payment.method.inherit.view.form</field>
+        <field name="model">account.payment.method</field>
+        <field name="inherit_id" ref="l10n_ve_check_printing.modo_pagos_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add your xpath here -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="sales_report" widget="boolean_toggle"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

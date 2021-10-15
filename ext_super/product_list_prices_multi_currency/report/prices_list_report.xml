@@ -1,0 +1,285 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+        <!-- Add you code here -->
+        <report
+            id="action_prices_list_report_template"
+            model="stock.wizard.price.list"
+            string="prices_list"
+            report_type="qweb-pdf"
+            name="product_list_prices_multi_currency.prices_list_report"
+            file="product_list_prices_multi_currency.prices_list_report"
+            menu="True"
+            />
+
+        <template id="external_layout_prices_list_report">
+
+            <div class="header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="col-xs-3">
+                                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" style="max-height: 100px; max-width: 150px; margin-top:22px;"/>
+                            </div>
+                            <div class="col-xs-9 text-right" style="margin-top:22px;" name="moto"/>
+                        </div>
+                        <div t-if="o.company_id.logo or o.company_id.report_header" class="row zero_min_height">
+                            <div class="col-xs-12">
+                                <div style="border-bottom: 1px solid black;"/>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center"><br/>
+                            <b style="font-size:20px;">Prices List</b><br/>
+                        </div>
+                        <div class="col-4 text-right">
+                            <b style="font-size:12px;">Page <span class="page" style="font-size:12px;"/> / <span class="topage" style="font-size:12px;"/></b><br/>
+                            <b style="font-size:12px;" t-field="o.date_now"></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="article o_report_layout_standard">
+                <t t-raw="0"/>
+            </div>
+
+            <div class="footer">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    
+                </div>
+            </div>
+        </template>
+
+        <template id="prices_list_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="product_list_prices_multi_currency.external_layout_prices_list_report">
+                        
+                        <div class="page">
+                            <t t-set="prices" t-value="o._get_prices()"/>
+                            <t t-set="rate" t-value="o._get_rate()"/>
+                            <t t-set="pages" t-value="len(o.category_id)"/>
+                            <t t-foreach="o.category_id" t-as="categ">
+                                <table style="width: 100%;">
+                                    <t t-if="len(prices) == 1">
+                                        <colgroup>
+                                            <col span="1" style="width: 20%;"/>
+                                            <col span="1" style="width: 20%;"/>
+                                            <col span="1" style="width: 15%;"/>
+                                            <col span="1" style="width: 10%;"/>
+                                            <col span="1" style="width: 15%;"/>
+                                            <t t-foreach="prices" t-as="item">
+                                                <col span="2" style="width: auto;"/>
+                                            </t>
+                                        </colgroup>                                    
+                                    </t>
+                                    <t t-elif="len(prices) == 2">
+                                        <colgroup>
+                                            <col span="1" style="width: 10%;"/>
+                                            <col span="1" style="width: 12%;"/>
+                                            <col span="1" style="width: 10%;"/>
+                                            <col span="1" style="width: 8%;"/>
+                                            <col span="1" style="width: 10%;"/>
+                                            <t t-foreach="prices" t-as="item">
+                                                <col span="1" style="width: auto;"/>
+                                            </t>
+                                        </colgroup>
+                                    </t>
+                                    <t t-else="">
+                                        <colgroup>
+                                            <col span="1" style="width: 9%;"/>
+                                            <col span="1" style="width: 10%;"/>
+                                            <col span="1" style="width: 9%;"/>
+                                            <col span="1" style="width: 8%;"/>
+                                            <col span="1" style="width: 9%;"/>
+                                            <t t-foreach="prices" t-as="item">
+                                                <col span="1" style="width: auto;"/>
+                                            </t>
+                                        </colgroup>
+                                    </t>
+                                    <thead>
+                                        <tr style="background-color: #cacaca">
+                                            <th colspan="100" class="text-center" style="border-bottom: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                <span style="font-size:14px;"><t t-esc="categ.name"/></span>
+                                            </th>
+                                        </tr>
+                                        <tr style="background-color: #cacaca">
+                                            <th rowspan="2" class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                <span style="font-size:14px;">Qty / Available</span>
+                                            </th>
+                                            <th colspan="4" class="text-center" style="border-right: 3px solid white; border-bottom: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                <span style="font-size:14px;">Description</span>
+                                            </th>
+                                            <t t-foreach="prices" t-as="item">
+                                                <th colspan="2" class="text-center" style="border-right: 3px solid white; border-bottom: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                    <span style="font-size:14px;"><t t-esc="item.name"/></span>
+                                                </th>
+                                            </t>
+                                        </tr>
+                                        <tr style="background-color: #cacaca">
+                                            <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                <span style="font-size:14px;">Measures</span>
+                                            </th>
+                                            <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                <span style="font-size:14px;">Model</span>
+                                            </th>
+                                            <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                <span style="font-size:14px;">Tarps</span>
+                                            </th>
+                                            <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                <span style="font-size:14px;">Brand</span>
+                                            </th>
+                                            <t t-foreach="prices" t-as="item">
+                                                <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                    <span style="font-size:14px;">Price Bs.</span>
+                                                </th>
+                                                <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle;">
+                                                    <span style="font-size:14px;">Price $</span>
+                                                </th>
+                                            </t>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o._get_products(categ)" t-as="item">
+                                            <tr>
+                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-center">
+                                                    <span style="font-size:12px;"><t t-esc="item.qty_available" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                </td>
+                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-center">
+                                                    <span style="font-size:12px;"><t t-esc="item.description"/></span>
+                                                </td>
+                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-center">
+                                                    <span style="font-size:12px;"><t t-esc="item.modelo"/></span>
+                                                </td>
+                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-center">
+                                                    <span style="font-size:12px;"><t t-esc="item.tarps"/></span>
+                                                </td>
+                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-center">
+                                                    <span style="font-size:12px;"><t t-esc="item.brand_id.name"/></span>
+                                                </td>
+                                                <t t-foreach="o._get_prices()" t-as="line">
+                                                    <t t-set="ctrl" t-value="True"/>
+                                                    <t t-foreach="line.item_ids" t-as="lines">
+                                                        <t t-if="lines.applied_on == '3_global'">
+                                                            <t t-if="line.currency_id.id == 3">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price / rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price * rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-set="ctrl" t-value="False"/>
+                                                        </t>
+                                                        
+                                                        <t t-elif="lines.applied_on == '2_product_category' and item.categ_id in (lines.categ_id)">
+                                                            <t t-if="line.currency_id.id == 3">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price / rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price * rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-set="ctrl" t-value="False"/>
+                                                        </t>
+                                                        
+                                                        <t t-elif="lines.applied_on == '2_product_category' and item.categ_id in (lines.categ_id.parent_id)">
+                                                            <t t-if="line.currency_id.id == 3">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price / rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price * rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-set="ctrl" t-value="False"/>
+                                                        </t>
+                                                        
+                                                        <t t-elif="lines.applied_on == '1_product' and item.product_tmpl_id in (lines.product_tmpl_id)">
+                                                            <t t-if="line.currency_id.id == 3">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price / rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price * rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-set="ctrl" t-value="False"/>
+                                                        </t>
+                                                        
+                                                        <t t-elif="lines.applied_on == '0_product_variant' and item in (lines.product_id)">
+                                                            <t t-if="line.currency_id.id == 3">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price / rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price * rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                                <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-right">
+                                                                    <span style="font-size:12px;"><t t-esc="lines.fixed_price" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                                </td>
+                                                            </t>
+                                                            <t t-set="ctrl" t-value="False"/>
+                                                        </t>
+                                                    </t>
+                                                    <t t-if="ctrl">
+                                                        <td colspan="2" style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-center">
+                                                        </td>
+                                                    </t>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                                <t t-set="pages" t-value="pages - 1"/>
+                                <t t-if="pages > 0">
+                                    <div style="page-break-after: always"></div> 
+                                </t>
+                            </t>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>        
+
+    </data>
+</odoo>

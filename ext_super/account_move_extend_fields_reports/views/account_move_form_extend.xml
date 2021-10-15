@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- Add you code here -->
+        
+        <!-- account.move inherit form view -->
+        <record model="ir.ui.view" id="account_move_extend_form">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="seller_id" domain="[('is_seller', '=', True)]" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))], 'required': [('type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}" context="{'default_seller_id': seller_id}"/>
+                    <field name="payment_condition_id" required="1" attrs="{'invisible': [('type', '=', 'entry')], 'required': [('type', '!=', 'entry')]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_post']" position="after">
+                    <field name="paperformat" invisible="1"/>
+                    <button string="Free Form/ME Bs." name="invoice_letter_bs" type="object" class="oe_highlight" attrs="{'invisible': [('paperformat', '!=', 'letter')]}"/>
+                    <button string="Free Form/ME USD" name="invoice_letter_usd" type="object" class="oe_highlight" attrs="{'invisible': [('paperformat', '!=', 'letter')]}"/>
+                    <button string="Free Form/ME Bs." name="invoice_half_bs" type="object" class="oe_highlight" attrs="{'invisible': [('paperformat', '!=', 'half')]}"/>
+                    <button string="Free Form/ME USD" name="invoice_half_usd" type="object" class="oe_highlight" attrs="{'invisible': [('paperformat', '!=', 'half')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
