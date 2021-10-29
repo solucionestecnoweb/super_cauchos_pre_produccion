@@ -24,4 +24,4 @@
 from . import  res_currecy_rate
 from . import  product
 from . import  account_move
-
+from . import  purchase, sale

@@ -9,18 +9,18 @@
             <tree create="false" delete="false" editable="bottom">
                 <!-- Add your fields here -->
                 <field name="compra_id" readonly="1"/>
-                <field name="cantidad"/>
-                <field name="unidades_id"/>
-                <field name="pr"/>
-                <field name="producto_id"/>
-                <field name="modelo" string="Modelo"/>
-                <field name="precio" widget="monetary"/>
-                <field name="pronto_pago"/>
-                <field name="super_promo"/>
+                <field name="cantidad" readonly="1"/>
+                <field name="unidades_id" readonly="1"/>
+                <field name="pr" readonly="1"/>
+                <field name="producto_id" readonly="1"/>
+                <field name="modelo" string="Modelo" readonly="1"/>
+                <field name="precio" widget="monetary" readonly="1"/>
+                <field name="pronto_pago" readonly="1"/>
+                <field name="super_promo" readonly="1"/>
                 <field name="c_apartada" readonly="1"/>
                 <field name="c_disponible" readonly="1"/>
                 <field name="moneda_id" invisible="1"/>
-                <field name="fecha_planeada"/>
+                <field name="fecha_planeada" readonly="1"/>
             </tree>
         </field>
     </record>
@@ -51,7 +51,7 @@
                     </group>
                 </group>
                 <footer>
-                    <button name="show_list" string="Mostrar Registros" type="object" class="oe_highlight" />
+                    <button name="print_pdf" string="Exportar PDF" type="object" class="oe_highlight" />
                     <button special="cancel" string="Cancelar" class="oe_highlight" />
                 </footer>
             </form>

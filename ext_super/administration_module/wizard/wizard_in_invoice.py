@@ -23,7 +23,8 @@ class WizardInInvoice(models.TransientModel):
     date_from = fields.Date(string='Date From', default=lambda *a:datetime.now().strftime('%Y-%m-%d'))
     date_to = fields.Date('Date To', default=lambda *a:(datetime.now() + timedelta(days=(1))).strftime('%Y-%m-%d'))
     date_now = fields.Datetime(string='Date Now', default=lambda *a:datetime.now())
-    
+    partner_ids = fields.Many2many(comodel_name='res.partner', string='Clientes')
+
     state = fields.Selection([('choose', 'choose'), ('get', 'get')],default='choose')
     report = fields.Binary('Prepared file', filters='.xls', readonly=True)
     name = fields.Char('File Name', size=60)
@@ -33,21 +34,39 @@ class WizardInInvoice(models.TransientModel):
         return {'type': 'ir.actions.report','report_name': 'administration_module.in_invoice_report','report_type':"qweb-pdf"}
 
     def _get_data(self):
-        xfind = self.env['account.move.line'].search([
-            ('date','>=',self.date_from),
-            ('date','<=',self.date_to),
-            ('display_type', 'not in', ('line_section', 'line_note')),
-            ('move_id.state', '!=', 'cancel'),
-            ('move_id.invoice_payment_state', '!=', 'paid'),
-            ('move_id.type', 'in', ('in_invoice', 'entry')),
-            ('move_id.journal_id.type', 'in', ('bank', 'purchase')),
-            ('move_id.state', '=', 'posted'),
-            ('amount_residual', '!=', 0),
-            ('full_reconcile_id', '=', False),
-            ('balance', '!=', 0),
-            ('account_id.reconcile', '=', True),
-            ('account_id.internal_type', '=', 'payable'),
-        ])
+        if self.partner_ids:
+            xfind = self.env['account.move.line'].search([
+                ('date','>=',self.date_from),
+                ('date','<=',self.date_to),
+                ('partner_id', 'in', self.partner_ids.ids),
+                ('display_type', 'not in', ('line_section', 'line_note')),
+                ('move_id.state', '!=', 'cancel'),
+                ('move_id.invoice_payment_state', '!=', 'paid'),
+                ('move_id.type', 'in', ('in_invoice', 'entry')),
+                ('move_id.journal_id.type', 'in', ('bank', 'purchase')),
+                ('move_id.state', '=', 'posted'),
+                ('amount_residual', '!=', 0),
+                ('full_reconcile_id', '=', False),
+                ('balance', '!=', 0),
+                ('account_id.reconcile', '=', True),
+                ('account_id.internal_type', '=', 'payable'),
+            ])
+        else:
+            xfind = self.env['account.move.line'].search([
+                ('date','>=',self.date_from),
+                ('date','<=',self.date_to),
+                ('display_type', 'not in', ('line_section', 'line_note')),
+                ('move_id.state', '!=', 'cancel'),
+                ('move_id.invoice_payment_state', '!=', 'paid'),
+                ('move_id.type', 'in', ('in_invoice', 'entry')),
+                ('move_id.journal_id.type', 'in', ('bank', 'purchase')),
+                ('move_id.state', '=', 'posted'),
+                ('amount_residual', '!=', 0),
+                ('full_reconcile_id', '=', False),
+                ('balance', '!=', 0),
+                ('account_id.reconcile', '=', True),
+                ('account_id.internal_type', '=', 'payable'),
+            ])
         return xfind
     
     # *******************  REPORTE EN EXCEL ****************************

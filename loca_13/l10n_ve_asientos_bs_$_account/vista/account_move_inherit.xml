@@ -47,12 +47,38 @@
         </field>
     </record>
 
+    <!--record id="account_move_line_inerhit_apunt_conta_pag" model="ir.ui.view">
+        <field name="name">account.move.line.inerhit.apunt.cont.pag</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree_grouped"/>
+        <field name="arch" type="xml">
+           <xpath expr="//field[@name='amount_currency']" position="replace">  
+                <field name="debit_aux" string="Debito $" sum="debit_aux"/>
+                <field name="credit_aux" string="Credito $" sum="credit_aux"/>
+              
+            </xpath>
+        </field>
+    </record-->
+
     <record id="account_move_line_inerhit_apunt_conta" model="ir.ui.view">
         <field name="name">account.move.line.inerhit.apunt.cont</field>
         <field name="model">account.move.line</field>
         <field name="inherit_id" ref="account.view_move_line_tree"/>
         <field name="arch" type="xml">
            <xpath expr="//field[@name='amount_currency']" position="replace">  
+                <field name="debit_aux" string="Debito $" sum="debit_aux"/>
+                <field name="credit_aux" string="Credito $" sum="credit_aux"/>
+              
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_line_inerhit_apunt_conta_pag" model="ir.ui.view">
+        <field name="name">account.move.line.inerhit.apunt.cont.pag</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree_grouped"/>
+        <field name="arch" type="xml">
+           <xpath expr="//field[@name='credit']" position="after">  
                 <field name="debit_aux" string="Debito $" sum="debit_aux"/>
                 <field name="credit_aux" string="Credito $" sum="credit_aux"/>
               

@@ -20,7 +20,6 @@ class PurchaseRequisitions(models.Model):
     request_date = fields.Date(string='Requisition Date', default=fields.Date.today())
     received_date = fields.Date(string='Received Date')
     date_end = fields.Date(string='Requisition Deadline')
-    cancel_date = fields.Date(compute="_compute_cancel_requisition")
     priority = fields.Selection(string='Priority', selection=[('very_low', 'Very Low'), ('low', 'Low'), ('meddium', 'Meddium'), ('high', 'High')], default="low")
     
     requisition_lines_ids = fields.One2many(comodel_name='purchase.requisitions.lines', inverse_name='requisition_id', string='Requisition Lines')
@@ -31,21 +30,13 @@ class PurchaseRequisitions(models.Model):
 
     @api.constrains('state')
     def _compute_name(self):
-        if self.name == 'Nuevo' and self.state == 'confirmed':
+        if self.name == 'Nuevo':
             self.name = self.env['ir.sequence'].next_by_code('purchase.requisition.seq')
     
     @api.onchange('employee_id')
     def set_department(self):
         for item in self:
             item.department_id = item.employee_id.department_id.id
-
-    def _compute_cancel_requisition(self):
-        for item in self:
-            item.cancel_date = fields.Date.today()
-            if item.state == 'confirmed':
-                if item.date_end < item.cancel_date:
-                    item.state = 'cancel'
-
 
     @api.onchange('date_end')
     def date_end_validate(self):

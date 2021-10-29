@@ -3,7 +3,7 @@
 
     <report
             id="action_prorrateo_iva_reporte"
-            model="wizard.prorrateo.iva"
+            model="prorrateo.iva"
             string="Prorrateo de IVA"
             report_type="qweb-pdf"
             name="prorrateo_iva_reporte.prorrateo_iva_reporte"
@@ -96,7 +96,7 @@
 
                                 <tbody>
 
-                                    <t t-foreach="o.lines_ids" t-as="item">
+                                    <t t-foreach="o.invoice_ids." t-as="item">
                                         <tr>
                                             <td style="border-bottom: 1px solid #cacaca; display: table-cell; vertical-align: middle;" class="text-center">
                                                 <span style="font-size:12px;"><t t-esc="item.cliente"/></span>

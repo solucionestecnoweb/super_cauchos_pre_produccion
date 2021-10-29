@@ -67,74 +67,7 @@ class WizardProrrateoIVA(models.TransientModel):
 
     # *******************  BÚSQUEDA DE DATOS ****************************
 
-    def get_data(self):
-        xfind = self.env['account.move'].search([
-            ('date', '>=', self.date_from),
-            ('date', '<=', self.date_to),
-            ('state', '=', 'posted'),
-            ('type', '!=', 'entry'),
-            ('company_id', '=', self.company_id.id),
-        ])
 
-        t = self.env['data.prorrateo.iva']
-        for item in xfind.sorted(key=lambda x: x.partner_id.id):
-            
-            valor = 0
-            tipo = ''
-            for line in item.alicuota_line_ids:
-                valor += line.total_valor_iva_nd + line.total_base_nd
-            if valor == 0:
-                tipo = 'nd'
-            else:
-                if item.amount_total - valor == 0:
-                    tipo = 'td'
-                else:
-                    tipo = 'pd'
-                    
-            if self.currency_id.id == 3:
-                if item.currency_id.id == self.currency_id.id:
-                    values = {
-                        'cliente': item.partner_id.name,
-                        'n_factura': item.invoice_number,
-                        'cuenta': item.journal_id.name,
-                        'credito_fiscal': item.amount_tax,
-                        'deducible': 0,
-                        'no_deducible': 0,
-                        'tipo': tipo,
-                    }
-                else:
-                    values = {
-                        'cliente': item.partner_id.name,
-                        'n_factura': item.invoice_number,
-                        'cuenta': item.journal_id.name,
-                        'credito_fiscal': item.amount_tax * item.os_currency_rate,
-                        'deducible': 0,
-                        'no_deducible': 0,
-                        'tipo': tipo,
-                    }
-            else:
-                if item.currency_id.id == self.currency_id.id:
-                    values = {
-                        'cliente': item.partner_id.name,
-                        'n_factura': item.invoice_number,
-                        'cuenta': item.journal_id.name,
-                        'credito_fiscal': item.amount_tax,
-                        'deducible': 0,
-                        'no_deducible': 0,
-                        'tipo': tipo,
-                    }
-                else:
-                    values = {
-                        'cliente': item.partner_id.name,
-                        'n_factura': item.invoice_number,
-                        'cuenta': item.journal_id.name,
-                        'credito_fiscal': item.amount_tax / item.os_currency_rate,
-                        'deducible': 0,
-                        'no_deducible': 0,
-                        'tipo': tipo,
-                    }
-            t.create(values)
-        self.lines_ids = t.search([])
 
     # *******************  REPORTE EN EXCEL ****************************
 

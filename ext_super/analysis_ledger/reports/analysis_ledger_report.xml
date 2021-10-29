@@ -47,23 +47,64 @@
                     <t t-call="analysis_ledger.external_layout_analysis_ledger_report">
                         
                         <div class="page">
-                            <br/><br/>
                             <table style="width: 100%;">
                                 <colgroup>
-                                    <col span="1" style="width: 15%;"/>
-                                    <col span="1" style="width: 25%;"/>
-                                    <col span="1" style="width: 15%;"/>
-                                    <col span="1" style="width: 15%;"/>
-                                    <col span="1" style="width: 15%;"/>
-                                    <col span="1" style="width: 15%;"/>
+                                    <col span="1" style="width: 10%;"/>
+                                    <col span="1" style="width: 11%;"/>
+                                    <col span="1" style="width: 11%;"/>
+                                    <col span="1" style="width: 20%;"/>
+                                    <col span="1" style="width: 12%;"/>
+                                    <col span="1" style="width: 12%;"/>
+                                    <col span="1" style="width: 12%;"/>
+                                    <col span="1" style="width: 12%;"/>
                                 </colgroup>
-                                <thead>
+                                <thead> 
                                     <tr>
                                         <th class="text-center" style="border-bottom: 1px solid black; display: table-cell; vertical-align: middle;">
                                             <span style="font-size:14px;">Código</span>
                                         </th>
-                                        <th class="text-center" style="border-bottom: 1px solid black; display: table-cell; vertical-align: middle;">
+                                        <th colspan="7" style="border-bottom: 1px solid black; display: table-cell; vertical-align: middle;">
                                             <span style="font-size:14px;">Descripción de la Cuenta</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="display: table-cell; vertical-align: middle;">
+                                            <span style="font-size:12px;"><t t-esc="o.account_id.group_id.code_prefix"/></span><br/>
+                                            <span style="font-size:12px;"><t t-esc="o.account_id.code"/></span>
+                                        </td>
+                                        <td colspan="7" style="display: table-cell; vertical-align: middle;">
+                                            <span style="font-size:12px;"><t t-esc="o.account_id.group_id.name"/></span><br/>
+                                            <span style="font-size:12px;"><t t-esc="o.account_id.name"/></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table style="width: 100%;">
+                                <colgroup>
+                                    <col span="1" style="width: 10%;"/>
+                                    <col span="1" style="width: 11%;"/>
+                                    <col span="1" style="width: 11%;"/>
+                                    <col span="1" style="width: 20%;"/>
+                                    <col span="1" style="width: 12%;"/>
+                                    <col span="1" style="width: 12%;"/>
+                                    <col span="1" style="width: 12%;"/>
+                                    <col span="1" style="width: 12%;"/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="border-bottom: 1px solid black; display: table-cell; vertical-align: middle;">
+                                            <span style="font-size:14px;">Fecha</span>
+                                        </th>
+                                        <th class="text-center" style="border-bottom: 1px solid black; display: table-cell; vertical-align: middle;">
+                                            <span style="font-size:14px;">N° Comprobante</span>
+                                        </th>
+                                        <th class="text-center" style="border-bottom: 1px solid black; display: table-cell; vertical-align: middle;">
+                                            <span style="font-size:14px;">Documento</span>
+                                        </th>
+                                        <th class="text-center" style="border-bottom: 1px solid black; display: table-cell; vertical-align: middle;">
+                                            <span style="font-size:14px;">Descripción del Movimiento</span>
                                         </th>
                                         <th class="text-center" style="border-bottom: 1px solid black; display: table-cell; vertical-align: middle;">
                                             <span style="font-size:14px;">Saldo Anterior</span>
@@ -88,11 +129,17 @@
                                     <!-- Totals -->
 
                                 <tbody>
-
+                                    <t t-set="cuenta" t-value="0"/>
                                     <t t-foreach="o.lines_ids" t-as="item">
                                         <tr>
                                             <td style="display: table-cell; vertical-align: middle;" class="text-center">
-                                                <span style="font-size:12px;"><t t-esc="item.code"/></span>
+                                                <span style="font-size:12px;"><t t-esc="item.date"/></span>
+                                            </td>
+                                            <td style="display: table-cell; vertical-align: middle;" class="text-center">
+                                                <span style="font-size:12px;"><t t-esc="item.comp_number"/></span>
+                                            </td>
+                                            <td style="display: table-cell; vertical-align: middle;" class="text-center">
+                                                <span style="font-size:12px;"><t t-esc="item.doc_num"/></span>
                                             </td>
                                             <td style="display: table-cell; vertical-align: middle;" class="text-center">
                                                 <span style="font-size:12px;"><t t-esc="item.description"/></span>
@@ -118,7 +165,7 @@
                                         
                                     </t>
                                         <tr>
-                                            <td colspan="2" style="display: table-cell; vertical-align: middle;" class="text-center"><b style="font-size:12px;">Total General</b></td>
+                                            <td colspan="4" style="display: table-cell; vertical-align: middle;" class="text-center"><b style="font-size:12px;">Total General</b></td>
                                             <td style="border-top: 1px solid black; display: table-cell; vertical-align: middle; padding-right: 5;" class="text-right"><span style="font-size:12px;"><t t-esc="total_previous" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></span></td>
                                             <td style="border-top: 1px solid black; display: table-cell; vertical-align: middle; padding-right: 5;" class="text-right"><span style="font-size:12px;"><t t-esc="total_debit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></span></td>
                                             <td style="border-top: 1px solid black; display: table-cell; vertical-align: middle; padding-right: 5;" class="text-right"><span style="font-size:12px;"><t t-esc="total_credit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></span></td>

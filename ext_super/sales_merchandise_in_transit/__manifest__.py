@@ -7,9 +7,7 @@
     "license": "AGPL-3",
     "depends": ['base', 'sale', 'purchase_imports_extend', 'purchase'],
     "data": [
-        "views/sales_merchandise_transit.xml",
         "views/wizard_sales_merchandise_in_transit.xml",
-        "report/sales_merchandise_in_transit.xml"
     ],
     'installable': True,
 }

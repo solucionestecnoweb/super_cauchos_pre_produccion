@@ -18,9 +18,11 @@ class PurchasePayOrder(models.Model):
     invoice_id = fields.Many2one(comodel_name='account.move', string='Invoice')
     order_id = fields.Many2one(comodel_name='purchase.order', string='Purchase Order')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.user.company_id.currency_id)
-    
+    rate = fields.Float(string='Tasa', default=lambda x: x.env['res.currency.rate'].search([('name', '<=', fields.Date.today()), ('currency_id', '=', 2)], limit=1).sell_rate)
+
     pay_order_lines_ids = fields.One2many(comodel_name='purchase.pay.order.lines', inverse_name='pay_order_id', string='Requisition Lines')
     amount_total = fields.Float(string='Amount Total', compute='_compute_amount_total')
+    current_debt = fields.Float(string='Deuda Restante', compute='_compute_current_debt')
     
     total_debt_invoice = fields.Monetary(string='Total Debt', store=True, related='invoice_id.amount_total')
     currency_invoice = fields.Many2one(comodel_name='res.currency', string='Currency', related='invoice_id.currency_id')    
@@ -33,9 +35,24 @@ class PurchasePayOrder(models.Model):
         for item in self:
             amount = 0
             for line in item.pay_order_lines_ids:
-                amount += line.amount
+                if item.currency_id.id == 3:
+                    if item.currency_id.id == item.invoice_id.currency_id.id or item.currency_id.id == item.order_id.currency_id.id:
+                        amount += line.amount
+                    else:
+                        amount += line.amount / item.rate
+                else:
+                    if item.currency_id.id == item.invoice_id.currency_id.id or item.currency_id.id == item.order_id.currency_id.id:
+                        amount += line.amount
+                    else:
+                        amount += line.amount * item.rate
             item.amount_total = amount
 
+    def _compute_current_debt(self):
+        for item in self:
+            if item.total_debt_invoice:
+                item.current_debt = item.total_debt_invoice - item.amount_total
+            else:
+                item.current_debt = item.total_debt_order - item.amount_total
 
     @api.onchange('payment_reference')
     def _clean_reference(self):

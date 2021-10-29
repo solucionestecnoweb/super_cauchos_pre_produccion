@@ -11,7 +11,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="seller_id" domain="[('is_seller', '=', True)]" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))], 'required': [('type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}" context="{'default_seller_id': seller_id}"/>
-                    <field name="payment_condition_id" required="1" attrs="{'invisible': [('type', '=', 'entry')], 'required': [('type', '!=', 'entry')]}"/>
+                    <field name="payment_condition_id" attrs="{'invisible': [('type', '=', 'entry')], 'required': [('type', '!=', 'entry')]}"/>
                 </xpath>
                 <xpath expr="//button[@name='action_post']" position="after">
                     <field name="paperformat" invisible="1"/>

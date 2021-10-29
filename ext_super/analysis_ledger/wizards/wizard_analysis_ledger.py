@@ -20,12 +20,15 @@ _logger = logging.getLogger(__name__)
 class DataanAlysisLedger(models.TransientModel):
     _name = 'data.analysis.ledger'
 
-    code = fields.Char(string='Code')
+    date = fields.Date(string='Date')
+    comp_number = fields.Char(string='N° Comp.')
+    doc_num = fields.Char(string='Doc Num')    
     description = fields.Char(string='Description')
     previous = fields.Float(string='Previous')
     debit = fields.Float(string='Debit')
     credit = fields.Float(string='Credit')
-    current = fields.Float(string='Current')    
+    current = fields.Float(string='Current')
+    account_id = fields.Many2one(comodel_name='account.account', string='Account')    
 
 class WizardAnalysisLedger(models.TransientModel):
     _name = 'wizard.analysis.ledger'
@@ -34,6 +37,7 @@ class WizardAnalysisLedger(models.TransientModel):
     date_to = fields.Date('Date To', default=lambda *a:(datetime.now() + timedelta(days=(1))).strftime('%Y-%m-%d'))
     date_now = fields.Datetime(string='Date Now', default=lambda *a:datetime.now())
     currency_id = fields.Many2one(comodel_name='res.currency', string='Currency')
+    account_id = fields.Many2one(comodel_name='account.account', string='Cuentas')
 
     state = fields.Selection([('choose', 'choose'), ('get', 'get')],default='choose')
     report = fields.Binary('Prepared file', filters='.xls', readonly=True)
@@ -67,10 +71,9 @@ class WizardAnalysisLedger(models.TransientModel):
     # *******************  BÚSQUEDA DE DATOS ****************************
 
     def get_data(self):
-        xfind = self.env['account.move.line'].search([])
+        xfind = self.env['account.move.line'].search([('account_id', '=', self.account_id.id)])
 
         t = self.env['data.analysis.ledger']
-        account = ''
         for item in xfind.sorted(key=lambda x: x.account_id.id):
             
             previous = 0
@@ -78,59 +81,59 @@ class WizardAnalysisLedger(models.TransientModel):
             debit = 0
             current = 0
 
-            if account != item.account_id.id:
-                account = item.account_id.id
+            caccount = self.env['account.move.line'].search([
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('parent_state', '=', 'posted'),
+                ('id', '=', item.id)
+            ])
+            
+            paccount = self.env['account.move.line'].search([
+                ('date', '<', self.date_from),
+                ('parent_state', '=', 'posted'),
+                ('id', '=', item.id)
+            ])
 
-                caccount = self.env['account.move.line'].search([
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('parent_state', '=', 'posted'),
-                    ('account_id', '=', item.account_id.id)
-                ])
-                
-                paccount = self.env['account.move.line'].search([
-                    ('date', '<', self.date_from),
-                    ('parent_state', '=', 'posted'),
-                    ('account_id', '=', item.account_id.id)
-                ])
+            for line in caccount:
+                rate = line.move_id.os_currency_rate
+                if not rate:
+                    rate = 1
+                if self.currency_id.id == 3:
+                    debit += line.debit
+                    credit += line.credit
+                    
+                    current -= line.debit
+                    current += line.credit
+                else:
+                    debit += line.debit / rate
+                    credit += line.credit / rate
+                    
+                    current -= line.debit / rate
+                    current += line.credit / rate
+            
+            for line in paccount:
+                rate = line.move_id.os_currency_rate
+                if not rate:
+                    rate = 1
+                if self.currency_id.id == 3:
+                    previous -= line.debit
+                    previous += line.credit
+                else:
+                    previous -= line.debit / rate
+                    previous += line.credit / rate
 
-                for line in caccount:
-                    rate = self.env['res.currency.rate'].search([('name', '=', line.date)], limit=1).sell_rate
-                    if not rate:
-                        rate = 1
-                    if self.currency_id.id == 3:
-                        debit += line.debit
-                        credit += line.credit
-                        
-                        current -= line.debit
-                        current += line.credit
-                    else:
-                        debit += line.debit / rate
-                        credit += line.credit / rate
-                        
-                        current -= line.debit / rate
-                        current += line.credit / rate
-                
-                for line in paccount:
-                    rate = self.env['res.currency.rate'].search([('name', '=', line.date)], limit=1).sell_rate
-                    if not rate:
-                        rate = 1
-                    if self.currency_id.id == 3:
-                        previous -= line.debit
-                        previous += line.credit
-                    else:
-                        previous -= line.debit / rate
-                        previous += line.credit / rate
-
-                values = {
-                    'code': item.account_id.code,
-                    'description': item.account_id.name,
-                    'previous': previous,
-                    'debit': debit,
-                    'credit': credit,
-                    'current': current,
-                }
-                t.create(values)
+            values = {
+                'date': item.date,
+                'comp_number': item.move_id.invoice_ctrl_number,
+                'doc_num': item.move_id.invoice_number,
+                'description': item.name,
+                'previous': previous,
+                'debit': debit,
+                'credit': credit,
+                'current': current,
+                'account_id': item.account_id.id
+            }
+            t.create(values)
         self.lines_ids = t.search([])
 
     # *******************  REPORTE EN EXCEL ****************************
@@ -156,31 +159,48 @@ class WizardAnalysisLedger(models.TransientModel):
         ws1.row(row).height = 500
 
         #CABECERA DEL REPORTE
-        ws1.write_merge(row,row, 2, 3, self.company_id.name, header_tittle_style)
+        ws1.write_merge(row,row, 3, 4, self.company_id.name, header_tittle_style)
         xdate = self.date_now.strftime('%d/%m/%Y %I:%M:%S %p')
         xdate = datetime.strptime(xdate,'%d/%m/%Y %I:%M:%S %p') - timedelta(hours=4)
-        ws1.write_merge(row,row, 4, 5, xdate.strftime('%d/%m/%Y %I:%M:%S %p'), header_tittle_style)
+        ws1.write_merge(row,row, 5, 7, xdate.strftime('%d/%m/%Y %I:%M:%S %p'), header_tittle_style)
         row += 1
-        ws1.write_merge(row,row, 2, 3, 'R.I.F. ' + self.company_id.vat, header_tittle_style)
+        ws1.write_merge(row,row, 3, 4, 'R.I.F. ' + self.company_id.vat, header_tittle_style)
         row += 1
-        ws1.write_merge(row,row, 2, 3, _("Libro Mayor de Análisis"), header_tittle_style)
+        ws1.write_merge(row,row, 3, 4, _("Libro Mayor de Análisis"), header_tittle_style)
         row += 1
-        ws1.write_merge(row,row, 2, 3, _('Desde: ') + self.date_from.strftime('%d/%m/%Y') + _(' Hasta: ') + self.date_to.strftime('%d/%m/%Y'), header_tittle_style)
+        ws1.write_merge(row,row, 3, 4, _('Desde: ') + self.date_from.strftime('%d/%m/%Y') + _(' Hasta: ') + self.date_to.strftime('%d/%m/%Y'), header_tittle_style)
         row += 2
 
-        #CABECERA DE LA TABLA 
+        #Cuenta Contable
         ws1.write(row,col+0, _("Código"),header_content_style)
-        ws1.col(col+0).width = int((len('x.x.x.xx.xxx')+2)*256)
-        ws1.write(row,col+1, _("Descripción de la Cuenta"),header_content_style)
-        ws1.col(col+1).width = int((len('Descripción de la Cuenta')+20)*256)
-        ws1.write(row,col+2, _("Saldo Anterior"),header_content_style)
-        ws1.col(col+2).width = int((len('xxx.xxx.xxx,xx xxx')+2)*256)
-        ws1.write(row,col+3, _("Débitos"),header_content_style)
-        ws1.col(col+3).width = int((len('xxx.xxx.xxx,xx xxx')+2)*256)
-        ws1.write(row,col+4, _("Créditos"),header_content_style)
+        ws1.write_merge(row,row, 1, 2, _("Descripción de la Cuenta"),header_content_style)
+        row += 1
+
+        ws1.write(row,col+0, self.account_id.group_id.code_prefix,lines_style_center)
+        ws1.write_merge(row,row, 1, 2, self.account_id.group_id.name,lines_style_center)
+        row += 1
+
+        ws1.write(row,col+0, self.account_id.code,lines_style_center)
+        ws1.write_merge(row,row, 1, 2, self.account_id.name,lines_style_center)
+        row += 1
+
+        #CABECERA DE LA TABLA 
+        ws1.write(row,col+0, _("Fecha"),header_content_style)
+        ws1.col(col+0).width = int((len('xx/xx/xxxx')+2)*256)
+        ws1.write(row,col+1, _("N° Comprobante"),header_content_style)
+        ws1.col(col+1).width = int((len('N° Comprobante')+2)*256)
+        ws1.write(row,col+2, _("Documento"),header_content_style)
+        ws1.col(col+2).width = int((len('Documento')+2)*256)
+        ws1.write(row,col+3, _("Descripción de la Cuenta"),header_content_style)
+        ws1.col(col+3).width = int((len('Descripción de la Cuenta')+20)*256)
+        ws1.write(row,col+4, _("Saldo Anterior"),header_content_style)
         ws1.col(col+4).width = int((len('xxx.xxx.xxx,xx xxx')+2)*256)
-        ws1.write(row,col+5, _("Saldo Actual"),header_content_style)
+        ws1.write(row,col+5, _("Débitos"),header_content_style)
         ws1.col(col+5).width = int((len('xxx.xxx.xxx,xx xxx')+2)*256)
+        ws1.write(row,col+6, _("Créditos"),header_content_style)
+        ws1.col(col+6).width = int((len('xxx.xxx.xxx,xx xxx')+2)*256)
+        ws1.write(row,col+7, _("Saldo Actual"),header_content_style)
+        ws1.col(col+7).width = int((len('xxx.xxx.xxx,xx xxx')+2)*256)
 
         #VARIABLES TOTALES
         total_previous = 0
@@ -192,23 +212,33 @@ class WizardAnalysisLedger(models.TransientModel):
         for item in self.lines_ids:
             row += 1
             # Código
-            if item.code:
-                ws1.write(row,col+0, item.code,lines_style_center)
+            if item.date:
+                ws1.write(row,col+0, item.date.strftime('%d/%m/%Y'),lines_style_center)
             else:
                 ws1.write(row,col+0, '',lines_style_center)
-            # Descripción de la Cuenta
-            if item.description:
-                ws1.write(row,col+1, item.description,lines_style_center)
+            # Código
+            if item.comp_number:
+                ws1.write(row,col+1, item.comp_number,lines_style_center)
             else:
                 ws1.write(row,col+1, '',lines_style_center)
+            # Código
+            if item.doc_num:
+                ws1.write(row,col+2, item.doc_num,lines_style_center)
+            else:
+                ws1.write(row,col+2, '',lines_style_center)
+            # Descripción de la Cuenta
+            if item.description:
+                ws1.write(row,col+3, item.description,lines_style_center)
+            else:
+                ws1.write(row,col+3, '',lines_style_center)
             # Saldo Anterior
-            ws1.write(row,col+2, self.float_format(item.previous),lines_style_right)
+            ws1.write(row,col+4, self.float_format(item.previous),lines_style_right)
             # Débitos
-            ws1.write(row,col+4, self.float_format(item.debit),lines_style_right)
+            ws1.write(row,col+5, self.float_format(item.debit),lines_style_right)
             # Créditos
-            ws1.write(row,col+3, self.float_format(item.credit),lines_style_right)
+            ws1.write(row,col+6, self.float_format(item.credit),lines_style_right)
             # Saldo Actual
-            ws1.write(row,col+5, self.float_format(item.current),lines_style_right)
+            ws1.write(row,col+7, self.float_format(item.current),lines_style_right)
 
             total_previous += item.previous
             total_debit += item.credit
@@ -217,11 +247,11 @@ class WizardAnalysisLedger(models.TransientModel):
 
         #TOTALES
         row += 1
-        ws1.write_merge(row,row,col+0,col+1, _('Total general'), lines_style_center)
-        ws1.write(row,col+2, self.float_format(total_previous), lines_style_right)
-        ws1.write(row,col+3, self.float_format(total_debit), lines_style_right)
-        ws1.write(row,col+4, self.float_format(total_credit), lines_style_right)
-        ws1.write(row,col+5, self.float_format(total_current), lines_style_right)
+        ws1.write_merge(row,row,col+0,col+3, _('Total general'), lines_style_center)
+        ws1.write(row,col+4, self.float_format(total_previous), lines_style_right)
+        ws1.write(row,col+5, self.float_format(total_debit), lines_style_right)
+        ws1.write(row,col+6, self.float_format(total_credit), lines_style_right)
+        ws1.write(row,col+7, self.float_format(total_current), lines_style_right)
 
         #IMPRESIÓN
         wb1.save(fp)

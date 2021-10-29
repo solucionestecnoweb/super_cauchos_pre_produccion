@@ -21,6 +21,7 @@
         "views/sale_order_imports.xml",
         "views/wizard_importations.xml",
         "report/importation_cycle.xml",
+        "report/merchandise_in_transit.xml",
         "views/res_company.xml",
     ],
     'installable': True,

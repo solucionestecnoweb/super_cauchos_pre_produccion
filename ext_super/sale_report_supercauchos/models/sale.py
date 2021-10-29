@@ -16,7 +16,8 @@ class SaleOrderExtend(models.Model):
 
 	arrive_date = fields.Date(string='Arrive Date')
 	payment_condition_id = fields.Many2one(comodel_name='account.condition.payment', string='Payment Condition')
-
+	rate = fields.Float(string='Tasa', default=lambda x: x.env['res.currency.rate'].search([('name', '<=', fields.Date.today()), ('currency_id', '=', 2)], limit=1).sell_rate)
+	
 	@api.onchange('partner_id')
 	def _onchange_seller(self):
 		if self.partner_id.payment_condition_id:

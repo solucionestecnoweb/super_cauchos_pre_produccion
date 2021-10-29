@@ -103,7 +103,12 @@
                                 <t t-set="iva_24" t-value="0"/>
                                 <!-- Fin variables totales -->
 
-                                <t t-set="rate" t-value="o.get_currency_rate()"/>
+                                <t t-if="o.custom_rate">
+                                    <t t-set="rate" t-value="o.os_currency_rate"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="rate" t-value="o.get_currency_rate()"/>
+                                </t>
                                 <t t-if="o.currency_id.id == 3">
                                     <tbody>
                                         <!-- Lineas -->
@@ -420,7 +425,12 @@
                                 <t t-set="iva_24" t-value="0"/>
                                 <!-- Fin variables totales -->
 
-                                <t t-set="rate" t-value="o.get_currency_rate()"/>
+                                <t t-if="o.custom_rate">
+                                    <t t-set="rate" t-value="o.os_currency_rate"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="rate" t-value="o.get_currency_rate()"/>
+                                </t>
                                 <t t-if="o.currency_id.id == 3">
                                     <tbody>
                                         <!-- Lineas -->
@@ -737,7 +747,12 @@
                                 <t t-set="iva_24" t-value="0"/>
                                 <!-- Fin variables totales -->
 
-                                <t t-set="rate" t-value="o.get_currency_rate()"/>
+                                <t t-if="o.custom_rate">
+                                    <t t-set="rate" t-value="o.os_currency_rate"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="rate" t-value="o.get_currency_rate()"/>
+                                </t>
                                 <t t-if="o.currency_id.id == 3">
                                     <tbody>
                                         <!-- Lineas -->

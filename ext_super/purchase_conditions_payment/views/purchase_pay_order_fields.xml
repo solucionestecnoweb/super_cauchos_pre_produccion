@@ -45,6 +45,7 @@
                                 <field name="company_id" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="payment_reference" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="currency_id" required="1" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"/>
+                                <field name="rate" required="1" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"/>
                             </group>
                             <group>
                                 <field name="request_date" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -69,7 +70,10 @@
                                     <field name="currency_order" invisible="1"/>
                                     <field name="currency_invoice" invisible="1"/>
                                     
-                                    <field name="amount_total" class="oe_subtotal_footer_separator" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="amount_total" class="oe_subtotal_footer_separator" readonly="1" attrs="{'invisible': [('payment_reference', '!=', 'invoice')]}" widget="monetary" options="{'currency_field': 'currency_invoice'}"/>
+                                    <field name="amount_total" class="oe_subtotal_footer_separator" readonly="1" widget="monetary" attrs="{'invisible': [('payment_reference', '!=', 'purchase_order')]}" options="{'currency_field': 'currency_order'}"/>
+                                    <field name="current_debt" class="oe_subtotal_footer_separator" readonly="1" attrs="{'invisible': [('payment_reference', '!=', 'invoice')]}" widget="monetary" options="{'currency_field': 'currency_invoice'}"/>
+                                    <field name="current_debt" class="oe_subtotal_footer_separator" readonly="1" widget="monetary" attrs="{'invisible': [('payment_reference', '!=', 'purchase_order')]}" options="{'currency_field': 'currency_order'}"/>
                                 </group>
                             </page>
                         </notebook>

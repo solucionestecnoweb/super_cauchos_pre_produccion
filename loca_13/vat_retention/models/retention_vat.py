@@ -512,7 +512,6 @@ class RetentionVat(models.Model):
         value = {
             'name': name,
             'date': self.move_id.date,#listo
-            #'amount_total':self.vat_retentioned,# LISTO
             'partner_id': self.partner_id.id, #LISTO
             'journal_id':id_journal,
             'ref': "Retención del %s %% IVA de la Factura %s" % (rate_valor,self.move_id.name),
@@ -521,6 +520,7 @@ class RetentionVat(models.Model):
             'type': "entry",# estte campo es el que te deja cambiar y almacenar valores
             'vat_ret_id': self.id,
             'company_id':self.env.company.id,#loca14
+            #'amount_total':self.move_id.amount_tax,  #self.vat_retentioned,# LISTO
             #'currency_id':self.invoice_id.currency_id.id,
         }
         #raise UserError(_('value= %s')%value)
@@ -580,8 +580,8 @@ class RetentionVat(models.Model):
              'date': self.move_id.date,
              'partner_id': self.partner_id.id,
              'account_id': cuenta_haber,
-             #'currency_id':self.invoice_id.currency_id.id,
-             #'amount_currency': 0.0,
+             #'currency_id':self.invoice_id.currency_id.id if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0,
+             #'amount_currency': -1*self.invoice_id.amount_tax if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0.0,
              #'date_maturity': False,
              'credit': valores,
              'debit': 0.0, # aqi va cero   EL DEBITO CUNDO TIENE VALOR, ES QUE EN ACCOUNT_MOVE TOMA UN VALOR
@@ -597,6 +597,8 @@ class RetentionVat(models.Model):
 
         balances=valores-cero
         value['account_id'] = cuenta_debe
+        #value['currency_id'] = self.invoice_id.currency_id.id if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0
+        #value['amount_currency'] = self.invoice_id.amount_tax if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0.0
         value['credit'] = 0.0 # aqui va cero
         value['debit'] = valores
         value['balance'] = valores
@@ -605,6 +607,15 @@ class RetentionVat(models.Model):
         value['price_total'] = balances
 
         move_line_id2 = move_line_obj.create(value)
+
+        """self.env['account.move.line'].search([('id','=',move_line_id1.id)]).write({
+            'amount_currency':-1*self.invoice_id.amount_tax if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0.0,
+            'currency_id':self.invoice_id.currency_id.id if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0,
+            })
+        self.env['account.move.line'].search([('id','=',move_line_id2.id)]).write({
+            'amount_currency':self.invoice_id.amount_tax if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0.0,
+            'currency_id':self.invoice_id.currency_id.id if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0,
+            })"""
 
     def concilio_saldo_pendiente(self):
         id_retention=self.id

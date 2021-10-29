@@ -35,7 +35,7 @@
             </form>
         </field>
     </record>
-    <record id="action_prorrateo_iva" model="ir.actions.act_window">
+    <!-- <record id="action_prorrateo_iva" model="ir.actions.act_window">
         <field name="name">Reporte de Prorrateo de IVA</field>
         <field name="res_model">wizard.prorrateo.iva</field>
         <field name="view_mode">form</field>
@@ -47,6 +47,6 @@
                 parent="account.menu_finance_reports" 
                 id="prorrateo_iva_menu" 
                 action="action_prorrateo_iva"
-                sequence="5"
-                />
+                sequence="6"
+                /> -->
 </odoo>

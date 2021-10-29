@@ -19,7 +19,10 @@
                 <field name="delay_91_120"/>
                 <field name="delay_older"/>
                 <field name="delay_total"/>
-                <field name="delay_total_usd"/>
+                <field name="delay_total_usd" optional="show"/>
+                <field name="rate" optional="show"/>
+                <field name="amount_payed" optional="show"/>
+                <field name="amount_payed_usd" optional="show"/>
                 <field name="seller_id" invisible="1"/>
                 <field name="seller_true" invisible="1"/>
             </tree>
@@ -40,10 +43,20 @@
     </record>
 
     <record id="action_move_out_invoice_type_payment" model="ir.actions.act_window">
-        <field name="context">{'journal_type':'general', 'search_default_posted':1, 'search_default_receivable':1, 'search_default_group_by_partner':1, 'search_default_unreconciled':1}</field>
+        <field name="context">{'search_default_group_by_partner':1}</field>
         <field name="name">Past Due Accounts Receivable</field>
         <field name="res_model">account.move.line</field>
-        <field name="domain">[('display_type', 'not in', ('line_section', 'line_note')), ('move_id.state', '!=', 'cancel'), ('move_id.type', 'in', ('out_invoice', 'entry')), ('move_id.journal_id.type', 'in', ('bank', 'sale')), ('amount_residual', '!=', 0)]</field>
+        <field name="domain">[
+        ('display_type', 'not in', ('line_section', 'line_note')), 
+        ('move_id.state', '=', 'posted'), 
+        ('move_id.type', 'in', ('out_invoice', 'entry')), 
+        ('move_id.journal_id.type', 'in', ('bank', 'sale')), 
+        ('amount_residual', '!=', 0), 
+        ('account_id.internal_type', '=', 'receivable'),
+        ('full_reconcile_id', '=', False), 
+        ('balance', '!=', 0), 
+        ('account_id.reconcile', '=', True),
+        ]</field>
         <field name="view_id" ref="move_out_invoice_type_payment_view_tree"/>
         <field name="view_mode">tree,form</field>
     </record>

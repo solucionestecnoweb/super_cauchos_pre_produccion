@@ -69,7 +69,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <br/>
+                                        <span>Vencimiento</span> <b t-if="o.date_end"><t t-esc="o.date_end.strftime('%d/%m/%Y')"/></b>
                                     </td>
                                 </tr>
                                 <tr>

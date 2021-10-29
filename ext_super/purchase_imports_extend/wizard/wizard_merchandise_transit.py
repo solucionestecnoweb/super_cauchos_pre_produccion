@@ -31,27 +31,28 @@ class MerchandiseTransitTemp(models.Model):
     pronto_pago = fields.Char()
     super_promo = fields.Char()
     c_apartada = fields.Float()
+    seller_ids = fields.Many2many(comodel_name='res.partner')
     c_disponible = fields.Float()
     moneda_id = fields.Many2one(comodel_name='res.currency')
     fecha_planeada = fields.Datetime()
 
-    @api.constrains('cantidad','unidades_id','pr','producto_id','modelo','precio','pronto_pago','super_promo','fecha_planeada')
-    def constrains_factura(self):
-        self.actualizar_datos()
+    # @api.constrains('cantidad','unidades_id','pr','producto_id','modelo','precio','pronto_pago','super_promo','fecha_planeada')
+    # def constrains_factura(self):
+    #     self.actualizar_datos()
 
-    def actualizar_datos(self):
-        purchases = self.env['purchase.order.line'].sudo().search([
-            ('order_id', '=', self.compra_id.id),
-        ])
-        purchases.product_qty = self.cantidad
-        purchases.product_uom = self.unidades_id.id
-        purchases.pr = self.pr
-        purchases.product_id = self.producto_id.id
-        purchases.modelo = self.modelo
-        purchases.price_unit = self.precio
-        purchases.pronto_pago = self.pronto_pago
-        purchases.super_promo = self.super_promo
-        purchases.date_planned = self.fecha_planeada
+    # def actualizar_datos(self):
+    #     purchases = self.env['purchase.order.line'].sudo().search([
+    #         ('order_id', '=', self.compra_id.id),
+    #     ])
+    #     purchases.product_qty = self.cantidad
+    #     purchases.product_uom = self.unidades_id.id
+    #     purchases.pr = self.pr
+    #     purchases.product_id = self.producto_id.id
+    #     purchases.modelo = self.modelo
+    #     purchases.price_unit = self.precio
+    #     purchases.pronto_pago = self.pronto_pago
+    #     purchases.super_promo = self.super_promo
+    #     purchases.date_planned = self.fecha_planeada
     
 class WizardMerchandiseTransit(models.TransientModel):
     _name = 'wizard.merchandise.transit'
@@ -65,6 +66,15 @@ class WizardMerchandiseTransit(models.TransientModel):
     name = fields.Char('File Name', size=60)
     company_id = fields.Many2one('res.company','Company',default=lambda self: self.env.user.company_id.id)
 
+    line_ids = fields.Many2many(comodel_name='temp.merchandise.transit')
+    
+    def date_fix(self):
+        new_date = self.date_now - timedelta(hours=4)
+        return new_date
+        
+    def print_pdf(self):
+        self.get_data()
+        return {'type': 'ir.actions.report','report_name': 'purchase_imports_extend.merchandise_in_transit','report_type':"qweb-pdf"}
     
     def get_merchandise(self):
         xfind = self.env['purchase.order.line'].sudo().search([
@@ -79,23 +89,76 @@ class WizardMerchandiseTransit(models.TransientModel):
     def get_data(self):
         t = self.env['temp.merchandise.transit']
         t.search([]).unlink()
-        for item in self.get_merchandise():
-            values = {
-                'compra_id': item.order_id.id,
-                'cantidad': item.product_qty,
-                'unidades_id': item.product_uom.id,
-                'pr': item.pr,
-                'producto_id': item.product_id.id,
-                'modelo': item.product_id.modelo,
-                'precio': item.price_unit,
-                'pronto_pago': item.pronto_pago,
-                'super_promo': item.super_promo,
-                'c_apartada': item.apart_to_seller,
-                'c_disponible': item.apart_qty_available,
-                'moneda_id': item.currency_id.id,
-                'fecha_planeada': item.date_planned,
-            }
-            t.create(values)
+        product = ''
+        cantidad = 0
+        cantidad_dis = 0
+        sellers = []
+        regs = len(self.get_merchandise())
+        for item in self.get_merchandise().sorted(key= lambda x: x.product_id.id):
+            regs -= 1
+            if product != item.product_id.id:
+                if product != '':
+                    values = {
+                        'compra_id': orden,
+                        'cantidad': cantidad,
+                        'unidades_id': unidades,
+                        'pr': pr,
+                        'producto_id': product,
+                        'modelo': modelo,
+                        'precio': precio,
+                        'pronto_pago': pronto_pago,
+                        'super_promo': super_promo,
+                        'c_apartada': cantidad_apa,
+                        'seller_ids': sellers,
+                        'c_disponible': (cantidad_dis - cantidad_apa),
+                        'moneda_id': moneda,
+                        'fecha_planeada': fecha_plan,
+                    }
+                    t.create(values)
+                    cantidad = 0
+                    cantidad_dis = 0
+                    sellers = []
+                orden = item.order_id.id
+                unidades = item.product_uom.id
+                pr = item.pr
+                modelo = item.product_id.modelo
+                precio = item.price_unit
+                pronto_pago = item.pronto_pago
+                super_promo = item.super_promo
+                cantidad_apa = item.apart_to_seller
+                moneda = item.currency_id.id
+                fecha_plan = item.date_planned
+                product = item.product_id.id
+                xfind = self.env['sale.order.line'].sudo().search([
+                    ('state', 'in', ('draft', 'sent')),
+                    ('product_id', '=', item.product_id.id),
+                    ('is_transit_merch', '=', True),
+                    ('order_id.seller_id', '!=', False),
+                ])
+                for seller in xfind:
+                    sellers.append(seller.order_id.seller_id.id)
+            
+            cantidad += item.product_qty
+            cantidad_dis += item.product_qty
+            
+            if regs == 0:
+                values = {
+                    'compra_id': item.order_id.id,
+                    'cantidad': cantidad,
+                    'unidades_id': item.product_uom.id,
+                    'pr': item.pr,
+                    'producto_id': item.product_id.id,
+                    'modelo': item.product_id.modelo,
+                    'precio': item.price_unit,
+                    'pronto_pago': item.pronto_pago,
+                    'super_promo': item.super_promo,
+                    'c_apartada': item.apart_to_seller,
+                    'seller_ids': sellers,
+                    'c_disponible': cantidad_dis,
+                    'moneda_id': item.currency_id.id,
+                    'fecha_planeada': item.date_planned,
+                }
+                t.create(values)
         self.line_ids = t.search([])
         
     def show_list(self):

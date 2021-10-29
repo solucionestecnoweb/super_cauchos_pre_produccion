@@ -26,28 +26,30 @@ class SaleOrder(models.Model):
 
     def action_confirm(self):
         super().action_confirm()
-        for det in self.move_ids_without_package:
-            if det.stock>0:
-                if det.stock>=det.quantity_done:
-                    if det.quantity_done>0:
-                        pass
+        if self.picking_type_id.code!="incoming" and self.picking_type_id.code!="mrp_operation":
+            for det in self.move_ids_without_package:
+                if det.stock>0:
+                    if det.stock>=det.quantity_done:
+                        if det.quantity_done>0:
+                            pass
+                        else:
+                            raise UserError(_("La cantidad a transferir no debe ser cero"))
                     else:
-                        raise UserError(_("La cantidad a transferir no debe ser cero"))
+                        raise UserError(_("La cantidad a transferir del producto %s no puede ser mayor al stock actual del almacen de origen")%det.product_id.name)
                 else:
-                    raise UserError(_("La cantidad a transferir del producto %s no puede ser mayor al stock actual del almacen de origen")%det.product_id.name)
-            else:
-                raise UserError(_("El producto %s no puede ser movido con stock cero del almacen de origen")%det.product_id.name)
+                    raise UserError(_("El producto %s no puede ser movido con stock cero del almacen de origen")%det.product_id.name)
 
     def button_validate(self):
         super().button_validate()
-        for det in self.move_ids_without_package:
-            if det.stock>0:
-                if det.stock>=det.quantity_done:
-                    if det.quantity_done>0:
-                        pass
+        if self.picking_type_id.code!="incoming" and self.picking_type_id.code!="mrp_operation":
+            for det in self.move_ids_without_package:
+                if det.stock>0:
+                    if det.stock>=det.quantity_done:
+                        if det.quantity_done>0:
+                            pass
+                        else:
+                            raise UserError(_("La cantidad a transferir no debe ser cero %s")%det.stock)
                     else:
-                        raise UserError(_("La cantidad a transferir no debe ser cero %s")%det.stock)
+                        raise UserError(_("La cantidad a transferir del producto %s no puede ser mayor al stock actual del almacen de origen")%det.product_id.name)
                 else:
-                    raise UserError(_("La cantidad a transferir del producto %s no puede ser mayor al stock actual del almacen de origen")%det.product_id.name)
-            else:
-                raise UserError(_("El producto %s no puede ser movido con stock cero del almacen de origen")%det.product_id.name)
+                    raise UserError(_("El producto %s no puede ser movido con stock cero del almacen de origen")%det.product_id.name)

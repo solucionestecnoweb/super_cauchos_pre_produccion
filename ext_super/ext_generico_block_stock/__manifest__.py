@@ -13,7 +13,7 @@
     'category': 'Bloqueo de stock cero en ventas, transferencias y entregas',
 
     # any module necessary for this one to work correctly
-    'depends': ['product','base', 'account','sale','purchase','stock','product'],
+    'depends': ['product','base', 'account','sale','purchase','stock','product','purchase_imports_extend'],
 
     # always loaded
     'data': [

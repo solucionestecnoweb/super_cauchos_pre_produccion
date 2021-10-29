@@ -9,3 +9,11 @@ class PurchaseOrderDivision(models.Model):
 
     purchase_type = fields.Selection(string='Purchase Type', selection=[('national', 'National'), ('international', 'International')], default='national')
     
+class PurchaseOrderLineDivision(models.Model):
+    _inherit = 'purchase.order.line'
+
+    @api.constrains('price_unit')
+    def constrains_price(self):
+        if not self.display_type:
+            if self.price_unit == 0:
+                raise ValidationError('¡El precio es 0! Registre un precio válido.')

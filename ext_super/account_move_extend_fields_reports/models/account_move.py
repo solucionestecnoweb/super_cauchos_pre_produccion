@@ -30,7 +30,7 @@ class AccountMoveExtend(models.Model):
 	
 	def get_currency_rate(self):
 		xfind = self.env['res.currency.rate'].search([
-			('name', '=', self.invoice_date)
+			('name', '<=', self.invoice_date)
 		], limit=1).sell_rate
 		if xfind:
 			return xfind

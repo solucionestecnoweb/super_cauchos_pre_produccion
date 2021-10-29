@@ -28,11 +28,10 @@
                     <header>
                         <button string="Approval Request" name="approvals_request" type="object" class="oe_highlight" states="draft"/>
                         <field name="is_approved" invisible="1"/>
-                        <field name="cancel_date" invisible="1"/>
-                        <button name="reset_draft" type="object" string="Reset to Draft" states="cancel,reject,receive" class="btn-primary"/>
+                        <button name="reset_draft" type="object" string="Reset to Draft" states="confirmed,cancel,reject,receive" class="btn-primary"/>
                         <button name="requisition_confirm" type="object" string="Confirm" states="draft" class="btn-primary" groups="base.group_user"/>
                         <button name="action_received" type="object" string="Receive" states="confirmed" class="btn-primary"/>
-                        <button name="action_cancel" type="object" states="draft" string="Cancel" groups="base.group_user"/>
+                        <button name="action_cancel" type="object" states="draft,confirmed" string="Cancel" groups="base.group_user"/>
                         <button name="requisition_reject" type="object" string="Reject" states="confirmed" />
                         <field name="state" widget="statusbar" string="confirm"  statusbar_visible="draft,confirmed,receive,reject,cancel"/>
                     </header>
