@@ -23,7 +23,8 @@ class AccountMove(models.Model):
         self.env.company.currency_secundaria_id.id
         for selff in self:
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
-                valor=selff.amount_total
+                #valor=selff.amount_total
+                valor=abs(selff.amount_total_signed/selff.os_currency_rate) # campo para jose gregorio
             if self.env.company.currency_id.id==selff.currency_id.id:
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
                 if lista_tasa:
@@ -37,7 +38,8 @@ class AccountMove(models.Model):
         self.env.company.currency_secundaria_id.id
         for selff in self:
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
-                valor=selff.amount_untaxed
+                #valor=selff.amount_untaxed
+                valor=abs(selff.amount_untaxed_signed/selff.os_currency_rate) # campo para jose gregorio
             if self.env.company.currency_id.id==selff.currency_id.id:
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
                 if lista_tasa:
@@ -50,7 +52,8 @@ class AccountMove(models.Model):
         self.env.company.currency_secundaria_id.id
         for selff in self:
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
-                valor=selff.amount_residual
+                #valor=selff.amount_residual
+                valor=abs(selff.amount_residual_signed/selff.os_currency_rate) # campo para jose gregorio
             if self.env.company.currency_id.id==selff.currency_id.id:
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
                 if lista_tasa:
@@ -63,7 +66,8 @@ class AccountMove(models.Model):
         self.env.company.currency_secundaria_id.id
         for selff in self:
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
-                valor=selff.amount_tax
+                #valor=selff.amount_tax
+                valor=abs(selff.amount_tax_signed/selff.os_currency_rate) # campo para jose gregorio
             if self.env.company.currency_id.id==selff.currency_id.id:
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
                 if lista_tasa:
@@ -86,7 +90,8 @@ class  AccountMoveLine(models.Model):
         for selff in self:
             if selff.currency_id.id==self.env.company.currency_secundaria_id.id:
                 if selff.credit!=0:
-                    tasa= abs(selff.balance / selff.amount_currency )if  abs(selff.amount_currency) > 0 else selff.balance
+                    #tasa= abs(selff.balance / selff.amount_currency )if  abs(selff.amount_currency) > 0 else selff.balance
+                    tasa= selff.move_id.os_currency_rate
                     valor=tasa
             else:
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='id ASC')
@@ -103,7 +108,8 @@ class  AccountMoveLine(models.Model):
         for selff in self:
             if selff.currency_id.id==self.env.company.currency_secundaria_id.id:
                 if selff.debit!=0:
-                    tasa= abs(selff.balance / selff.amount_currency ) if  abs(selff.amount_currency) > 0 else selff.balance
+                    #tasa= abs(selff.balance / selff.amount_currency ) if  abs(selff.amount_currency) > 0 else selff.balance
+                    tasa= selff.move_id.os_currency_rate
                     valor=tasa
             else:
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='id ASC')

@@ -193,7 +193,12 @@ class RetentionVat(models.Model):
         }
         #raise UserError(_('value= %s')%value)
         move_obj = self.env['account.move']
-        move_id = move_obj.create(value)    
+        move_id = move_obj.create(value)  
+        self.env['account.move'].search([('id','=',move_id.id)]).write({
+            'custom_rate':self.invoice_id.custom_rate,
+            'currency_id':self.invoice_id.currency_id.id,
+            'os_currency_rate':self.invoice_id.os_currency_rate, # para el modulo de jose gregorio de moneda
+            })  
         #raise UserError(_('move_id= %s')%move_id) 
         return move_id
 
@@ -276,6 +281,17 @@ class RetentionVat(models.Model):
         value['price_total'] = balances
 
         move_line_id2 = move_line_obj.create(value)
+
+        if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id:
+            self.env['account.move.line'].search([('id','=',move_line_id1.id)]).write({
+                #'amount_currency':-1*self.invoice_id.amount_tax if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0.0,
+                'currency_id':self.invoice_id.currency_id.id,
+                })
+            self.env['account.move.line'].search([('id','=',move_line_id2.id)]).write({
+                #'amount_currency':self.invoice_id.amount_tax if self.invoice_id.currency_id.id==self.env.company.currency_secundaria_id.id else 0.0,
+                'currency_id':self.invoice_id.currency_id.id,
+                })
+
     
     def formato_fecha2(self,date):
         fecha = str(date)
