@@ -13,9 +13,5 @@ class SaleOrderLogicExtend(models.Model):
     def onchange_seller_id(self):
         if self.partner_id.assigned_seller_id.id:
             self.seller_id = self.partner_id.assigned_seller_id.id
-            self.user_id = self.partner_id.assigned_seller_id.user_id.id
-            self.team_id = self.partner_id.assigned_seller_id.team_id.id
         else:
             self.seller_id = False
-            self.user_id = False
-            self.team_id = False

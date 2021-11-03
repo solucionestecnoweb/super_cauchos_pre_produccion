@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='currency_id']" position="before">
-                <field name="isrl_ret_id" readonly="1" string="ISLR" attrs="{'invisible': [('type', '=','entry')]}"/>
+                <field name="isrl_ret_id" readonly="1" string="ISLR"/>
             </xpath>
             <!-- <xpath expr="//button[@id='account_invoice_payment_btn']" position="after">
                 <button name="create_retention" type="object" string="Crear Retencion"  attrs="{'invisible': [('state', '=', 'draft')]}" />

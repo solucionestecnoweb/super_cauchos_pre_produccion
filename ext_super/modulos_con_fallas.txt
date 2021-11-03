@@ -1,0 +1,2 @@
+sales_merchandise_in_transit (peo con el campo product_template_id)
+

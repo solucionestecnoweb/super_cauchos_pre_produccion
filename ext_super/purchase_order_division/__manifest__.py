@@ -9,7 +9,6 @@
     'data': [
         'views/purchase_order_division.xml',
         'views/sale_order_purchase_division.xml',
-        'views/purchase_order_attributes.xml',
         ],
     'installable': True,
     'auto_install': False,

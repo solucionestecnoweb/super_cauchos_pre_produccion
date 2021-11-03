@@ -10,7 +10,7 @@
             <field name="arch" type="xml">
                 <!-- Add your xpath here -->
                 <xpath expr="//field[@name='payment_term_id']" position="after">
-                    <field name="seller_id" domain="[('is_seller', '=', True)]" required="1"/>
+                    <field name="seller_id" domain="[('is_seller', '=', True)]"/>
                     <label for="" name="reservation_period">
                         <b>Reservation Period</b>
                     </label>

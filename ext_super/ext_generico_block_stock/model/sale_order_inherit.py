@@ -10,6 +10,7 @@ class SaleOrderLine(models.Model):
 
     stock=fields.Float(compute='_compute_stock_mano')
 
+    @api.onchange('product_id')
     def _compute_stock_mano(self):
         for selff in self:
             selff.stock=selff.product_id.qty_available
@@ -38,7 +39,7 @@ class SaleOrderLine(models.Model):
     #_inherit = 'sale.order'
 
 
-    def action_confirm(self):
+    """def action_confirm(self):
         super().action_confirm()
         for det in self.order_line:
             if det.product_id.qty_available>0:
@@ -50,4 +51,4 @@ class SaleOrderLine(models.Model):
                 else:
                     raise UserError(_("La cantidad a vender del producto %s no puede ser mayor al stock actual")%det.product_id.name)
             else:
-                raise UserError(_("El producto %s no puede ser vendido con stock cero")%det.product_id.name)
+                raise UserError(_("El producto %s no puede ser vendido con stock cero")%det.product_id.name)"""

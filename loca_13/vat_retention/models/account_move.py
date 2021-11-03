@@ -175,10 +175,12 @@ class AccountMove(models.Model):
         valor_aux=0
         #raise UserError(_('moneda compañia: %s')%self.company_id.currency_id.id)
         if self.currency_id.id!=self.company_id.currency_id.id:
-            monto_nativo=self.amount_untaxed_signed
-            monto_extran=self.amount_untaxed
-            tasa=abs(monto_nativo/monto_extran)
-            rate=round(tasa,3)
+            tasa= self.env['res.currency.rate'].search([('currency_id','=',self.currency_id.id),('name','<=',self.date)],order="name asc")
+            for det_tasa in tasa:
+                if fecha_contable_doc>=det_tasa.name:
+                    valor_aux=det_tasa.rate
+            rate=round(1/valor_aux,2)  # LANTA
+            #rate=round(valor_aux,2)  # ODOO SH
             resultado=valor*rate
         else:
             resultado=valor
@@ -236,6 +238,8 @@ class AccountMove(models.Model):
                 'retention_id':ret.id,
                 'tax_id':det_mov_line.tax_ids.id,
                 }
+                """if monto_iva!=0:
+                    ret_line = ret_lines.create(values)""" # codigo que excluye las lineas exentas
                 ret_line = ret_lines.create(values) #  Codigo 2 este incluye las lineas exentas
         self.write({'vat_ret_id':ret.id})
         # NUEVO CODIGO

@@ -40,38 +40,6 @@
                             </tree>
                         </field>
                     </page>
-                    <page name="shipping_info" string="Shipping Information">
-                        <group>
-                            <group string="General Information">
-                                <field name="policy"/>
-                                <field name="price_type"/>
-                                <field name="freight_type"/>
-                                <field name="expedient_import_number"/>
-                            </group>
-                            <group string="Arrival Information">
-                                <field name="arrival_date"/>
-                                <field name="harbor"/>
-                                <field name="proforma_number"/>
-                                <field name="reference"/>
-                                <field name="doc_reception"/>
-                                <field name="cus_hou_remitance"/>
-                                <field name="dua"/>
-                            </group>
-                            <group string="Shipping Information">
-                                <field name="shipping_number"/>
-                                <field name="shipping_date"/>
-                                <field name="arrival_shipping_date"/>
-                                <field name="country_id"/>
-                                <field name="shipping_city"/>
-                            </group>
-                            <group string="Vessel Information">
-                                <field name="vessel_name"/>
-                                <field name="vessel_containers"/>
-                                <field name="origin_vessel"/>
-                                <field name="transfer_vessel"/>
-                            </group>
-                        </group>
-                    </page>
                 </xpath>
             </field>
         </record>

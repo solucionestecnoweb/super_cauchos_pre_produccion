@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-22 02:20+0000\n"
-"PO-Revision-Date: 2021-09-22 02:20+0000\n"
+"POT-Creation-Date: 2021-07-03 20:29+0000\n"
+"PO-Revision-Date: 2021-07-03 20:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -144,8 +144,8 @@ msgid "<span style=\"font-size:14px;\">Type</span>"
 msgstr "<span style=\"font-size:14px;\">Tipo</span>"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__accumulated
@@ -240,11 +240,6 @@ msgid "Approve?"
 msgstr "¿Aprobado?"
 
 #. module: purchase_imports_extend
-#: model_terms:ir.ui.view,arch_db:purchase_imports_extend.purchase_order_imports_form
-msgid "Arrival Information"
-msgstr "Información de Llegada"
-
-#. module: purchase_imports_extend
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__aduana_doc
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_aduana_payment__payment_doc
 msgid "Attach Document"
@@ -260,21 +255,21 @@ msgid "Attachment Count"
 msgstr ""
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #, python-format
 msgid "Average Production"
 msgstr "Promedio Producción"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #, python-format
 msgid "Average Transit"
 msgstr "Promedio Tránsito"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__bl_date
 #, python-format
@@ -282,8 +277,8 @@ msgid "BL Date"
 msgstr "Fecha BL"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_containers__container_brand
@@ -310,18 +305,13 @@ msgid "Company"
 msgstr "Compañía"
 
 #. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_sale_order__company_to_apart_id
-msgid "Compañía a Apartar"
-msgstr ""
-
-#. module: purchase_imports_extend
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_containers__condition
 msgid "Condition"
 msgstr "Condición"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__container
@@ -392,7 +382,7 @@ msgid "Display Name"
 msgstr ""
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__eta
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_payment__eta
@@ -426,7 +416,7 @@ msgid "Export XLS"
 msgstr "Exportar EXCEL"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__f_prof
 #, python-format
@@ -471,17 +461,12 @@ msgid "Foreign Provider Information"
 msgstr "Información del Proveedor Extranjero"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model_terms:ir.ui.view,arch_db:purchase_imports_extend.external_layout_importation_cycle
 #, python-format
 msgid "From:"
 msgstr "Desde:"
-
-#. module: purchase_imports_extend
-#: model_terms:ir.ui.view,arch_db:purchase_imports_extend.purchase_order_imports_form
-msgid "General Information"
-msgstr "Información General"
 
 #. module: purchase_imports_extend
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_wizard_importation_cycle__group_field
@@ -579,8 +564,8 @@ msgid "Importation Cycle Report"
 msgstr "Reporte de Ciclo de Importación"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #, python-format
@@ -588,7 +573,7 @@ msgid "Importation cycle"
 msgstr "Ciclo de Importación"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #, python-format
 msgid "Importation cycle "
@@ -601,8 +586,8 @@ msgid "Imports"
 msgstr "Importaciones"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__invoice_id
@@ -723,8 +708,8 @@ msgid "N BL / Container"
 msgstr "N BL / Cont"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__nac
@@ -866,8 +851,8 @@ msgid "Production"
 msgstr "Producción"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__prof
@@ -946,11 +931,6 @@ msgid "Shipping Company"
 msgstr "Naviera"
 
 #. module: purchase_imports_extend
-#: model_terms:ir.ui.view,arch_db:purchase_imports_extend.purchase_order_imports_form
-msgid "Shipping Information"
-msgstr "Información de Embarque"
-
-#. module: purchase_imports_extend
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_wizard_importation_cycle__state
 msgid "State"
 msgstr "Estado"
@@ -984,8 +964,8 @@ msgid "Super Promo Promotion"
 msgstr "Promoción Super Promo"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__name
@@ -1011,7 +991,7 @@ msgid "To be released"
 msgstr "Por Liberar"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model_terms:ir.ui.view,arch_db:purchase_imports_extend.external_layout_importation_cycle
 #, python-format
@@ -1019,8 +999,8 @@ msgid "To:"
 msgstr "Para:"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__total
@@ -1036,7 +1016,7 @@ msgid "Total Amount"
 msgstr "Monto Total"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #, python-format
 msgid "Total Average Days"
@@ -1074,15 +1054,15 @@ msgid "Total Transit"
 msgstr "Total de Tránsito"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #, python-format
 msgid "Totals..."
 msgstr "Totales..."
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__transc
@@ -1091,8 +1071,8 @@ msgid "Transc"
 msgstr ""
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_importations__transit
@@ -1103,8 +1083,8 @@ msgid "Transit"
 msgstr "Tránsito"
 
 #. module: purchase_imports_extend
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
-#: code:addons/inm_ldr/prueba_super_cauchos_stw/ext_super/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
+#: code:addons/extra-addons/oasis/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: code:addons/purchase_imports_extend/wizard/wizard_importations.py:0
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_containers__container_type
@@ -1153,11 +1133,6 @@ msgid "Vessel"
 msgstr "Buque"
 
 #. module: purchase_imports_extend
-#: model_terms:ir.ui.view,arch_db:purchase_imports_extend.purchase_order_imports_form
-msgid "Vessel Information"
-msgstr "Información de Buque"
-
-#. module: purchase_imports_extend
 #: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order_imports_containers__warehouse
 msgid "Warehouse"
 msgstr "Almacén"
@@ -1181,16 +1156,6 @@ msgid "Website communication history"
 msgstr ""
 
 #. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__arrival_date
-msgid "arrival date"
-msgstr "Fecha de Llegada"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__arrival_shipping_date
-msgid "arrival shipping date"
-msgstr "Fecha de Estimada de Llegada"
-
-#. module: purchase_imports_extend
 #: model:ir.model.fields.selection,name:purchase_imports_extend.selection__wizard_importation_cycle__state__choose
 msgid "choose"
 msgstr "elegir"
@@ -1201,69 +1166,14 @@ msgid "confirm"
 msgstr "confirmar"
 
 #. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__country_id
-msgid "country"
-msgstr "País"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__cus_hou_remitance
-msgid "custom house remitance"
-msgstr "Envío de Aduana"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__doc_reception
-msgid "doc reception"
-msgstr "Recepción Documentos"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__dua
-msgid "dua"
-msgstr "DUA"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__expedient_import_number
-msgid "expedient import number"
-msgstr "Nro. Expediente de Importación"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__freight_type
-msgid "freight type"
-msgstr "Tipo de Flete"
-
-#. module: purchase_imports_extend
 #: model:ir.model.fields.selection,name:purchase_imports_extend.selection__wizard_importation_cycle__state__get
 msgid "get"
 msgstr "obtener"
 
 #. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__harbor
-msgid "harbor"
-msgstr "Puerto"
-
-#. module: purchase_imports_extend
 #: model:ir.actions.report,name:purchase_imports_extend.action_importation_cycle
 msgid "importation_cycle"
 msgstr "ciclo_importacion"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__origin_vessel
-msgid "origin vessel"
-msgstr "Buque de Origen"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__policy
-msgid "policy"
-msgstr "Poliza"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__price_type
-msgid "price type"
-msgstr "Tipo de Precio"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__proforma_number
-msgid "proforma number"
-msgstr "Número de Proforma"
 
 #. module: purchase_imports_extend
 #: model:ir.model,name:purchase_imports_extend.model_purchase_order_imports_aduana
@@ -1289,41 +1199,6 @@ msgstr ""
 #: model:ir.model,name:purchase_imports_extend.model_purchase_order_imports_payment
 msgid "purchase.order.imports.payment"
 msgstr ""
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__reference
-msgid "reference"
-msgstr "Referencia"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__shipping_city
-msgid "shipping city"
-msgstr "Ciudad"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__shipping_date
-msgid "shipping date"
-msgstr "Fecha"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__shipping_number
-msgid "shipping number"
-msgstr "Número"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__transfer_vessel
-msgid "transfer vessel"
-msgstr "Buque de Transbordo"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__vessel_containers
-msgid "vessel containers"
-msgstr "Contenedores"
-
-#. module: purchase_imports_extend
-#: model:ir.model.fields,field_description:purchase_imports_extend.field_purchase_order__vessel_name
-msgid "vessel name"
-msgstr "Nombre"
 
 #. module: purchase_imports_extend
 #: model:ir.model,name:purchase_imports_extend.model_wizard_importation_cycle

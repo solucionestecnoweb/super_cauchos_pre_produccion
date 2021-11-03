@@ -12,7 +12,7 @@
     "maintainer": "Oasis Consultora  C.A",
     "website": "https://oasisconsultora.com/",
 	'images': ['static/description/icon.png'],
-    "depends": ['base', 'product','account', 'purchase', 'sale'],
+    "depends": ['base', 'product','account'],
     "init_xml": [],
     "demo_xml": [],
     "data": [
@@ -20,7 +20,6 @@
         'views/product.xml',
         'views/exchange_rate.xml',
         'views/account_move.xml',
-        'views/sale_order.xml',
         'security/ir.model.access.csv',
         'data/data.xml',
     ],

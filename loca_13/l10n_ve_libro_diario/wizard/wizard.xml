@@ -37,7 +37,7 @@
         id="menu_libro_diario"
         parent="account.menu_finance_reports"
         name="Libro Diario"
-        sequence="11"
+		    sequence="11"
         action="action_report_wizard_1"/>
 
     </data>

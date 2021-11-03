@@ -10,7 +10,6 @@
             <!-- Add your xpath here -->
             <xpath expr="//field[@name='partner_shipping_id']" position="after">
                 <field name="is_transit_merch" widget="boolean_toggle"/>
-                <field name="company_to_apart_id" domain="[('id', '!=', company_id)]"/>
             </xpath>
             <xpath expr="//tree/field[@name='company_id']" position="after">
                 <field name="is_transit_merch" invisible="1"/>

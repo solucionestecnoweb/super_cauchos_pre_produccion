@@ -18,7 +18,6 @@
         "report/bs_invoices.xml",
         "report/usd_invoices.xml",
         "report/account_payment_extend.xml",
-        "views/invoice_html.xml"
     ],
     'installable': True,
 }

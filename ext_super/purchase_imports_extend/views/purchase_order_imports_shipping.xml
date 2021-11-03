@@ -4,7 +4,7 @@
         <!-- Add you code here -->
 
         <!-- purchase.order.imports.shipping tree view -->
-        <record id="imports_shipping_information_view_tree" model="ir.ui.view">
+        <record id="purchase_order_imports_shipping_view_tree" model="ir.ui.view">
             <field name="name">purchase.order.imports.shipping.view.tree</field>
             <field name="model">purchase.order.imports.shipping</field>
             <field name="arch" type="xml">
@@ -19,7 +19,7 @@
         </record>
 
         <!-- purchase.order.imports.shipping form view -->
-        <record id="imports_shipping_information_view_form" model="ir.ui.view">
+        <record id="purchase_order_imports_shipping_view_form" model="ir.ui.view">
             <field name="name">purchase.order.imports.shipping.view.form</field>
             <field name="model">purchase.order.imports.shipping</field>
             <field name="arch" type="xml">

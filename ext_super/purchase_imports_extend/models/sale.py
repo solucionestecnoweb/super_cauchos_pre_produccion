@@ -16,7 +16,6 @@ class SaleOrderImport(models.Model):
     _inherit = 'sale.order'
 
     is_transit_merch = fields.Boolean(string='Use Merchandise in Transit?')
-    company_to_apart_id = fields.Many2one(comodel_name='res.company', string='Compañía a Apartar')
 
 class SaleOrderLineImport(models.Model):
     _inherit = 'sale.order.line'

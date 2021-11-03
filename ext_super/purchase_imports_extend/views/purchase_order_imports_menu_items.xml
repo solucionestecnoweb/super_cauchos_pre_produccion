@@ -64,10 +64,11 @@
         <!-- Merchandise in transit -->
         <record id="imports_merchandise_transit_action" model="ir.actions.act_window">
             <field name="name">Merchandise in Transit</field>
-            <field name="res_model">wizard.merchandise.transit</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="purchase_imports_extend.wizard_merchandise_transit_view_form"/>
-            <field name="target">new</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.order.line</field>
+            <field name="domain">[('state', 'in', ('draft', 'sent', 'purchase')), ('qty_received', '=', 0)]</field>
+            <field name="view_id" ref="purchase_imports_extend.imports_merchandise_transit_view_tree"/>
+            <field name="view_mode">tree</field>
         </record>
             
         <menuitem   name="Merchandise in Transit" 
