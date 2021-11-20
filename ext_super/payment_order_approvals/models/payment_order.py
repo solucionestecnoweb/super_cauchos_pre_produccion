@@ -9,27 +9,28 @@ from odoo.exceptions import Warning
 class PaymentOrderApproval(models.Model):
     _inherit = 'purchase.pay.order'
 
-    is_approved = fields.Boolean(default=False)
+    is_approved = fields.Boolean(string='Solicitud aprobada', copy=False)
+    is_rejected = fields.Boolean(string='Solicitud rechazada', copy=False)
     approver_id = fields.Many2one(comodel_name='res.users', string='Approver')
 
-    def action_confirmed(self):
-        for item in self:
-            xfind = item.env['approval.request'].search([('payment_order_id', '=', item.id)])
-            is_company =  item.env['res.company'].search([('partner_id', '=', item.employee_id.address_id.id)])
-            if len(xfind) > 0:
-                for line in xfind:
-                    if line.request_status == 'approved':
-                        item.is_approved = True
-                    else:
-                        item.is_approved = False
-            elif len(is_company) > 0:
-                item.is_approved = True
-            else:
-                item.is_approved = False
-            if item.is_approved:
-                super(PaymentOrderApproval, self).action_confirmed()
-            else:
-                raise ValidationError(_("Cannot confirm until an approval request is approved for this payment order."))
+    # def action_confirmed(self):
+    #     for item in self:
+    #         xfind = item.env['approval.request'].search([('payment_order_id', '=', item.id)])
+    #         is_company =  item.env['res.company'].search([('partner_id', '=', item.employee_id.address_id.id)])
+    #         if len(xfind) > 0:
+    #             for line in xfind:
+    #                 if line.request_status == 'approved':
+    #                     item.is_approved = True
+    #                 else:
+    #                     item.is_approved = False
+    #         elif len(is_company) > 0:
+    #             item.is_approved = True
+    #         else:
+    #             item.is_approved = False
+    #         if item.is_approved:
+    #             super(PaymentOrderApproval, self).action_confirmed()
+    #         else:
+    #             raise ValidationError(_("Cannot confirm until an approval request is approved for this payment order."))
 
     def approvals_request_payment(self):
         xfind = self.env['approval.request'].search([('payment_order_id', '=', self.id), ('request_status', 'not in', ['refused', 'cancel'])])

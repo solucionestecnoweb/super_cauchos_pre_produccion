@@ -12,10 +12,15 @@
                 <xpath expr="//button[@name='button_confirm']" position="before">
                     <button string="Approval Request" name="approvals_request_purchase" type="object" class="oe_highlight" states="draft"/>
                     <button string="Approval Request" name="approvals_request_purchase" type="object" class="oe_highlight" states="sent"/>
-                    <field name="is_approved" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='priority']" position="after">
+                    <field name="is_approved" string="Solicitud aprobada" readonly="1"/>
+                    <field name="is_rejected" string="Solicitud rechazada" readonly="1"/>
                     <field name="approver_ids" widget="many2many_tags" required="1"/>
+                </xpath>
+
+                <xpath expr="//button[@name='button_confirm']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('is_approved', '=', False), ('is_rejected', '=', True)]}</attribute>
                 </xpath>
             </field>
         </record>

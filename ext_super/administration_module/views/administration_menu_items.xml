@@ -122,12 +122,12 @@
         sequence="30"
         action=""/>
 
-    <menuitem
+    <!-- <menuitem
         id="admin_daily_sales_close_report_menu"
         name="Daily Sales Close Report"
         parent="admin_billing_menu"
         sequence="35"
-        action="daily_sales_closing_report.action_daily_sales_report"/>
+        action="daily_sales_closing_report.action_daily_sales_report"/> -->
 
     <menuitem
         id="admin_withhilding_vat_customers_menu"

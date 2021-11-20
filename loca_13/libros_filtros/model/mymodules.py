@@ -33,7 +33,8 @@ class libro_compras(models.TransientModel):
             for det_tasa in tasa:
                 monto_nativo=det_tasa.amount_untaxed_signed
                 monto_extran=det_tasa.amount_untaxed
-                valor_aux=abs(monto_nativo/monto_extran)
+                #valor_aux=abs(monto_nativo/monto_extran)
+                valor_aux=det_tasa.os_currency_rate
             rate=round(valor_aux,3)  # LANTA
             #rate=round(valor_aux,2)  # ODOO SH
             resultado=valor*rate

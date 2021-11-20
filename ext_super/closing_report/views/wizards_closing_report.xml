@@ -42,12 +42,12 @@
             <field name="target">new</field>
         </record>
 
-        <menuitem   name="Collections Closing" 
+        <!-- <menuitem   name="Collections Closing" 
                     parent="administration_module.admin_collection_menu"
                     id="closing_report_report_menu" 
                     action="closing_report.action_closing_report"
                     sequence="35"
-                    />
+                    /> -->
     </data>
 
 </odoo>

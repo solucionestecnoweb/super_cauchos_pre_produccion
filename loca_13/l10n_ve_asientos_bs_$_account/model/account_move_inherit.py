@@ -24,12 +24,15 @@ class AccountMove(models.Model):
         for selff in self:
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
                 #valor=selff.amount_total
-                valor=abs(selff.amount_total_signed/selff.os_currency_rate) # campo para jose gregorio
+                valor=abs(selff.amount_total_signed/(selff.os_currency_rate+0.00000000000000000001)) # campo para jose gregorio
             if self.env.company.currency_id.id==selff.currency_id.id:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
-                if lista_tasa:
-                    for det in lista_tasa:
-                        valor=selff.amount_total_signed*det.rate
+                if selff.custom_rate!=True:
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
+                    if lista_tasa:
+                        for det in lista_tasa:
+                            valor=selff.amount_total_signed*det.rate
+                else:
+                    valor=abs(selff.amount_total_signed/(selff.os_currency_rate+0.0000000000000000001))
             selff.amount_total_signed_aux_bs=valor
             selff.amount_total_signed_bs=valor
 
@@ -39,12 +42,15 @@ class AccountMove(models.Model):
         for selff in self:
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
                 #valor=selff.amount_untaxed
-                valor=abs(selff.amount_untaxed_signed/selff.os_currency_rate) # campo para jose gregorio
+                valor=abs(selff.amount_untaxed_signed/(selff.os_currency_rate+0.000000000000001)) # campo para jose gregorio
             if self.env.company.currency_id.id==selff.currency_id.id:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
-                if lista_tasa:
-                    for det in lista_tasa:
-                        valor=selff.amount_untaxed_signed*det.rate
+                if selff.custom_rate!=True:
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
+                    if lista_tasa:
+                        for det in lista_tasa:
+                            valor=selff.amount_untaxed_signed*det.rate
+                else:
+                    valor=abs(selff.amount_untaxed_signed/(selff.os_currency_rate+0.0000000000000000001))
             selff.amount_untaxed_signed_bs=valor
 
     def _compute_monto_conversion_residual(self):
@@ -53,12 +59,15 @@ class AccountMove(models.Model):
         for selff in self:
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
                 #valor=selff.amount_residual
-                valor=abs(selff.amount_residual_signed/selff.os_currency_rate) # campo para jose gregorio
+                valor=abs(selff.amount_residual_signed/(selff.os_currency_rate+0.0000000000000000001)) # campo para jose gregorio
             if self.env.company.currency_id.id==selff.currency_id.id:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
-                if lista_tasa:
-                    for det in lista_tasa:
-                        valor=selff.amount_residual_signed*det.rate
+                if selff.custom_rate!=True:
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
+                    if lista_tasa:
+                        for det in lista_tasa:
+                            valor=selff.amount_residual_signed*det.rate
+                else:
+                    valor=abs(selff.amount_residual_signed/(selff.os_currency_rate+0.0000000000000000001))
             selff.amount_residual_signed_bs=valor
 
     def _compute_monto_conversion_tax(self):
@@ -67,12 +76,15 @@ class AccountMove(models.Model):
         for selff in self:
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
                 #valor=selff.amount_tax
-                valor=abs(selff.amount_tax_signed/selff.os_currency_rate) # campo para jose gregorio
+                valor=abs(selff.amount_tax_signed/(selff.os_currency_rate+0.000000000000000001)) # campo para jose gregorio
             if self.env.company.currency_id.id==selff.currency_id.id:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
-                if lista_tasa:
-                    for det in lista_tasa:
-                        valor=selff.amount_tax_signed*det.rate
+                if selff.custom_rate!=True:
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='id ASC')
+                    if lista_tasa:
+                        for det in lista_tasa:
+                            valor=selff.amount_tax_signed*det.rate
+                else:
+                    valor=abs(selff.amount_tax_signed/(selff.os_currency_rate+0.0000000000000000001))
             selff.amount_tax_bs=valor
 
 
@@ -83,22 +95,32 @@ class  AccountMoveLine(models.Model):
     balance_aux=fields.Float(compute='_compute_balance_conversion')
     credit_aux=fields.Float(compute='_compute_monto_credit_conversion')
     debit_aux=fields.Float(compute='_compute_monto_debit_conversion')
+    asiento_gastos = fields.Boolean()
+    tasa_gastos = fields.Float()
 
     def _compute_monto_credit_conversion(self):
         valor=0
         self.env.company.currency_secundaria_id.id
         for selff in self:
-            if selff.currency_id.id==self.env.company.currency_secundaria_id.id:
-                if selff.credit!=0:
-                    #tasa= abs(selff.balance / selff.amount_currency )if  abs(selff.amount_currency) > 0 else selff.balance
-                    tasa= selff.move_id.os_currency_rate
-                    valor=tasa
+            if selff.asiento_gastos!=True:
+                if selff.currency_id.id==self.env.company.currency_secundaria_id.id:
+                    if selff.credit!=0:
+                        #tasa= abs(selff.balance / selff.amount_currency )if  abs(selff.amount_currency) > 0 else selff.balance
+                        tasa= selff.move_id.os_currency_rate
+                        valor=tasa
+                else:
+                    if selff.move_id.custom_rate!=True:
+                        lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='id ASC')
+                        if lista_tasa:
+                            for det in lista_tasa:
+                                valor=(1/det.rate)
+                    else:
+                        if selff.credit!=0:
+                            tasa= selff.move_id.os_currency_rate
+                            valor=tasa
+                selff.credit_aux=selff.credit/(valor+0.0000000000001)
             else:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='id ASC')
-                if lista_tasa:
-                    for det in lista_tasa:
-                        valor=(1/det.rate)
-            selff.credit_aux=selff.credit/(valor+0.0000000000001)
+                selff.credit_aux=selff.credit/selff.tasa_gastos
 
 
     def _compute_monto_debit_conversion(self):
@@ -106,17 +128,25 @@ class  AccountMoveLine(models.Model):
         #self.debit_aux=0
         self.env.company.currency_secundaria_id.id
         for selff in self:
-            if selff.currency_id.id==self.env.company.currency_secundaria_id.id:
-                if selff.debit!=0:
-                    #tasa= abs(selff.balance / selff.amount_currency ) if  abs(selff.amount_currency) > 0 else selff.balance
-                    tasa= selff.move_id.os_currency_rate
-                    valor=tasa
+            if selff.asiento_gastos!=True:
+                if selff.currency_id.id==self.env.company.currency_secundaria_id.id:
+                    if selff.debit!=0:
+                        #tasa= abs(selff.balance / selff.amount_currency ) if  abs(selff.amount_currency) > 0 else selff.balance
+                        tasa= selff.move_id.os_currency_rate
+                        valor=tasa
+                else:
+                    if selff.move_id.custom_rate!=True:
+                        lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='id ASC')
+                        if lista_tasa:
+                            for det in lista_tasa:
+                                valor=(1/det.rate)
+                    else:
+                        if selff.debit!=0:
+                            tasa= selff.move_id.os_currency_rate
+                            valor=tasa
+                selff.debit_aux=selff.debit/(valor+0.0000000000001)
             else:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='id ASC')
-                if lista_tasa:
-                    for det in lista_tasa:
-                        valor=(1/det.rate)
-            selff.debit_aux=selff.debit/(valor+0.0000000000001)
+                selff.debit_aux=selff.debit/selff.tasa_gastos
 
     def _compute_balance_conversion(self):
         valor=0

@@ -5,13 +5,13 @@
         <report 
             id="action_purchase_order_purchases_extend" 
             model="purchase.order" 
-            string="Compras" 
+            string="O Compras ME" 
             report_type="qweb-pdf"
             name="purchase_report_supercauchos.purchase_order_purchases_extend" 
             file="purchase_report_supercauchos.purchase_order_purchases_extend" />
 
         <template id="external_layout_purchase_order_purchases_extend">
-            <div class="header">
+            <div class="header" style="font-size: 12px; font-family: Arial;">
                 <div class="container">
                     <div class="row">
                         <div class="col-5">
@@ -34,22 +34,22 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span>Proveedor: </span><b><t t-esc="o.partner_id.name"/></b>
+                                        <span><b>Proveedor </b> : </span><t t-esc="o.partner_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span>R.I.F: </span><b><t t-esc="o.partner_id.vat"/></b>
+                                        <span><b> R.I.F </b> :  </span><t t-esc="o.partner_id.vat"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span>Telefono: </span><b><t t-esc="o.partner_id.phone"/></b>
+                                        <span><b> Telefono </b>:  </span><t t-esc="o.partner_id.phone"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span>Dirección: </span><b><t t-esc="o.partner_id.street"/> <t t-esc="o.partner_id.city"/> <t t-esc="o.partner_id.state_id.name"/></b>
+                                        <span><b>Dirección </b>:  </span><t t-esc="o.partner_id.street"/> <t t-esc="o.partner_id.city"/> <t t-esc="o.partner_id.state_id.name"/>
                                     </td>
                                 </tr>
                             </table>
@@ -63,7 +63,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span>Emisión</span> <b><t t-if="o.date_approve" t-esc="o.date_approve.strftime('%d/%m/%Y')"/></b>
+                                        <span><b> Emisión</b></span> <t t-if="o.date_approve" t-esc="o.date_approve.strftime('%d/%m/%Y')"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -73,7 +73,11 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span>Vencimiento</span> <b t-if="o.date_end"><t t-esc="o.date_end.strftime('%d/%m/%Y')"/></b>
+                                        <t t-if="o.date_end">
+                                            <span><b t-if="o.date_end"> Vencimiento </b></span> <t t-esc="o.date_end.strftime('%d/%m/%Y')"/> 
+                                            <br/>
+                                            <span><b t-if="o.rate"> Tasa </b></span> <t t-esc="o.rate"/> 
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
@@ -91,7 +95,7 @@
                 <t t-raw="0"/>
             </div>
 
-            <div class="footer">
+            <div class="footer" style="font-size: 12px; font-family: Arial;">
                 <div class="container">
                     <div class="row">
                         <div class="col-6 border border-dark">
@@ -106,9 +110,9 @@
                                     <span>Total Orden de Compra</span>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <b><t t-esc="subtotal" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/></b><br/>
-                                    <b><t t-esc="taxes" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/></b><br/>
-                                    <b><t t-esc="total" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/></b>
+                                    <b><t t-esc="subtotal" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></b><br/>
+                                    <b><t t-esc="taxes" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></b><br/>
+                                    <b><t t-esc="total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></b>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +125,7 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="purchase_report_supercauchos.external_layout_purchase_order_purchases_extend" t-lang="o.partner_id.lang">
-                        <div class="page">
+                        <div class="page" style="font-size: 11px; font-family: Arial;" >
                             <br/><br/><br/><br/><br/>
                             <table style="width: 100%;">
 
@@ -140,6 +144,7 @@
                                     <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle; background-color: #cacaca;">Código</th>
                                     <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle; background-color: #cacaca;">Descripción</th>
                                     <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle; background-color: #cacaca;">Cant.</th>
+                                    <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle; background-color: #cacaca;">FillerT.</th>
                                     <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle; background-color: #cacaca;">Costo</th>
                                     <th class="text-center" style="border-right: 3px solid white; display: table-cell; vertical-align: middle; background-color: #cacaca;">Total</th>
                                 </thead>
@@ -163,13 +168,17 @@
                                                 <span><t t-esc="item.name"/></span>
                                             </td>
                                             <td class="text-right">
-                                                <span><t t-esc="item.product_qty" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                <span><t t-esc="'%.2f'% item.product_qty"  /></span>
+                                            </td>
+                                            <td class="text-right">
+                                                <span><t t-esc=" item.product_id.filler * item.product_uom_qty" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_secundaria_id"}' /></span>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <span><t t-esc="item.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></span>
                                             </td>
                                             <td class="text-center">
-                                                <span><t t-esc="item.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/></span>
-                                            </td>
-                                            <td class="text-center">
-                                                <span><t t-esc="item.product_qty * item.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/></span>
+                                                <span><t t-esc="item.product_qty * item.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></span>
                                             </td>
                                             <t t-set="total_qty" t-value="total_qty + item.product_qty"/>
                                             <t t-set="price" t-value="item.product_qty * item.price_unit"/>
@@ -183,7 +192,7 @@
                                     </t>
                                     <tr>
                                         <td colspan="2" class="text-right">Total Piezas</td>
-                                        <td class="text-right"><t t-esc="total_qty" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></td>
+                                        <td class="text-right"><t t-esc="total_qty" t-options='{"widget": "float", "decimal_precision": "o.currency_id"}'/></td>
                                     </tr>
                                 </tbody>     
                                 <!-- Fin lineas -->

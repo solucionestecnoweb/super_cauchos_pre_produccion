@@ -11,11 +11,16 @@
                 <!-- Add your xpath here -->
                 <xpath expr="//button[@name='reset_draft']" position="before">
                     <button string="Approval Request" name="approvals_request_payment" type="object" class="oe_highlight" states="draft"/>
-                    <field name="is_approved" invisible="1"/>
+
                 </xpath>
                 <xpath expr="//field[@name='order_id']" position="after">
-                    <field name="approver_id" required="1" attrs="{'readonly': [('state', 'in', ['done','cancel'])]}"/>
+                    <field name="is_approved" string="Solicitud aprobada" readonly="1"/>
+                    <field name="is_rejected" string="Solicitud rechazada" readonly="1"/>
+                    <field name="approver_id" required="1"/>
                 </xpath>
+                 <xpath expr="//button[@name='action_confirmed']" position="attributes">
+                     <attribute name="attrs">{'invisible': [('is_approved', '=', False)]}</attribute>
+                 </xpath>
             </field>
         </record>
     </data>

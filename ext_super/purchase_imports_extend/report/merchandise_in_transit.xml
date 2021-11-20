@@ -93,15 +93,23 @@
                                         <td class="text-center">
                                             <span style="font-size:12px;"><t t-esc="item.super_promo"/></span>
                                         </td>
-                                        <td class="text-center">
-                                            <span style="font-size:12px;"><t t-esc="item.c_apartada" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span style="font-size:12px;">
-                                                <t t-foreach="item.seller_ids" t-as="line">
-                                                    <t t-esc="line.name"/><br/>
+                                        <td colspan="2" class="text-center">
+                                            <table style="width: 100%;">
+                                                <t t-foreach="item.amount_ids" t-as="line">
+                                                    <tr>
+                                                        <td style="width: 50%;">
+                                                            <span style="font-size:12px;">
+                                                                <t t-esc="line.amount" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/><br/>
+                                                            </span>
+                                                        </td>
+                                                        <td style="width: 50%;">
+                                                            <span style="font-size:12px;">
+                                                                <t t-esc="line.seller_id.name"/><br/>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
                                                 </t>
-                                            </span>
+                                            </table>
                                         </td>
                                         <td class="text-center">
                                             <span style="font-size:12px;"><t t-esc="item.c_disponible" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>

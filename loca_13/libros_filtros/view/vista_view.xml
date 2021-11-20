@@ -9,7 +9,7 @@
             <xpath expr="//field[@name='journal_id']" position="before">
 
                <field name="ocultar_libros" string="Excluir de Libros?" widget="boolean_toggle"
-                attrs="{'invisible':[('state','=','posted')]}"/>
+                attrs="{'invisible':['|',('state','=','posted'),('type','=','entry')]}"/>
                              
             </xpath>
         </field>

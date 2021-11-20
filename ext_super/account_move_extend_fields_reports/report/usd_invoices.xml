@@ -15,7 +15,7 @@
 
         <template id="external_layout_account_move_extend_usd">
             <div class="header">
-                <div class="container">
+                <div class="container" style="font-size: 9px; font-family: Arial;">
                     <div class="row">
                         <div class="col-6">
                             <table style="width: 100%;">
@@ -70,7 +70,7 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="account_move_extend_fields_reports.external_layout_account_move_extend_usd">
-                        <div class="page">
+                        <div class="page" >
                             <br/><br/>
                             <table>
                                 <!-- Cantidad de columnas -->
@@ -392,7 +392,7 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="account_move_extend_fields_reports.external_layout_account_move_extend_usd">
-                        <div class="page">
+                        <div class="page" style="font-size: 9px; font-family: Arial;">
                             <br/><br/>
                             <table style="width: 100%;">
                                 <!-- Cantidad de columnas -->

@@ -25,7 +25,7 @@ class PurchaseOrderExtend(models.Model):
 	@api.onchange('date_order')
 	def _onchange_rate(self):
 		date_field = self.date_order
-		rate = self.env['res.currency.rate'].search([('name', '=', date_field.date()), ('company_id', '=', self.env.user.company_id.id)]).sell_rate
+		rate = self.env['res.currency.rate'].search([('name', '<=', date_field.date()), ('company_id', '=', self.env.user.company_id.id)], limit=1).sell_rate
 		if rate:
 			self.rate = rate
 		else:

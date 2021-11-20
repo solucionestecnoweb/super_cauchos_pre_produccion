@@ -21,9 +21,9 @@
         <field name="arch" type="xml">
             <form string="Prorrateo de IVA">
                 <header>
-                    <button name="search_invoice" type="object" string="Buscar Facturas" />
-                    <button name="post" type="object" string="Publicar" />
-                    <button name="draft" type="object" string="Volver a Borrador" />
+                    <button name="post" type="object" string="Publicar" states="draft"/>
+                    <button name="draft" type="object" string="Volver a Borrador" states="posted"/>
+                    <button name="find_lines" type="object" string="Buscar"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
                 </header>
                 <sheet>
@@ -38,69 +38,18 @@
                         </group>
                         <group>                        
                             <field name="hasta"/>                      
-                            <field name="no_deducible"/>    
-                            <field name="move_id"/>                       
+                            <field name="no_deducible"/>                      
                         </group>
                     </group>
                     <notebook>
-                        <page name="line_prorrateo" string="Lineas de Prorrateo">
-                            <field name="data_prorrateo_id" readonly="1">
+                        <page name="facturas" string="Facturas">
+                            <field name="invoice_ids" readonly="1">
                                 <tree>
-                                    <field name="cliente"/>
-                                    <field name="n_factura"/>
-                                    <field name="cuenta"/>
-                                    <field name="credito_fiscal"/>
-                                    <field name="deducible"/>
-                                    <field name="no_deducible"/>
-                                    <!-- <field name="tipo"/> -->
+                                    <field name="name"/>               
+                                    <field name="amount_total" sum="Total"/>               
                                 </tree>
                             </field>
-                            <group class="oe_subtotal_footer">
-                                <field name="total_deducible"/>                      
-                                <field name="total_no_deducible"/>                      
-                            </group>
-
                         </page>
-                        <page name="facturas_cliente" string="Facturas Clientes">
-                            <field name="sale_invoice_ids" readonly="1">
-                                <tree>
-                                    <field name="invoice_number_cli" string="Nro Factura"/>
-                                    <field name="partner_id" string="Cliente"/>
-                                    <field name="amount_untaxed_signed" string="Base Imponible"/>
-                                    <field name="amount_tax_signed" string="Impuesto"/>
-                                    <field name="amount_total_signed" string="Total Factura"/>
-                                    <field name="state" string="Estado"/>
-                                </tree>
-                            </field>
-
-                            <group class="oe_subtotal_footer">
-                                <field name="sale_amount_untaxed_signed"/>                      
-                                <field name="sale_amount_tax"/>                      
-                                <field name="sale_amount_total_signed"/>     
-                                <hr />
-                                <field name="ventas_gravadas"/>                      
-                                <field name="ventas_totales"/>    
-                            </group>
-
-                        </page>
-                        <page name="facturas_proveedores" string="Facturas Proveedores">
-                            <field name="purchase_invoice_ids" readonly="1">
-                                <tree>
-                                    <field name="invoice_number_pro" string="Nro Factura"/>
-                                    <field name="partner_id" string="Proveedor"/>
-                                    <field name="amount_untaxed_signed" string="Base Imponible"/>
-                                    <field name="amount_tax_signed" string="Impuesto"/>
-                                    <field name="amount_total_signed" string="Total Factura"/>
-                                    <field name="state" string="Estado"/>
-                                </tree>
-                            </field>
-                            <group class="oe_subtotal_footer">
-                                <field name="purchase_amount_untaxed_signed"/>                      
-                                <field name="purchase_amount_tax"/>                      
-                                <field name="purchase_amount_total_signed"/>                      
-                            </group>
-                        </page>
-<!--
                         <page name="asientos" string="Asientos Contables">
                             <field name="move_ids" readonly="1">
                                 <tree>
@@ -112,8 +61,7 @@
                                     <field name="credit_aux" string="Haber $"/>               
                                 </tree>
                             </field>
-                        </page>-->
-
+                        </page>
                     </notebook>
                 </sheet>
             </form>

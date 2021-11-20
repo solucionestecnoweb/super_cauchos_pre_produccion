@@ -65,7 +65,7 @@
             <field name="model">res.country.state.municipality</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Municipality">
+                <tree string="Municipality" editable="bottom">
                     <field name="ubigeo"/>
                     <field name="name"/>
                     <field name="state_id"/>
@@ -77,6 +77,7 @@
             <field name="name">Municipality</field>
             <field name="res_model">res.country.state.municipality</field>
             <field name="view_mode">tree,form</field>
+            <field name="type">ir.actions.act_window</field>
         </record>
 
 

@@ -8,32 +8,42 @@ from odoo.tools.float_utils import float_round
 class SaleOrderApproval(models.Model):
     _inherit = 'sale.order'
 
-    is_approved = fields.Boolean(default=False)
+    is_approved = fields.Boolean(string='Solicitud aprobada', copy=False)
+    is_rejected = fields.Boolean(string='Solicitud rechazada', copy=False)
+    is_contado = fields.Boolean(string='Es Contado')
     approver_ids = fields.Many2many(comodel_name='res.users', string='Approvers')
-    
-    def _action_confirm(self):
-        if not self.order_line:
-            raise UserError(_("No puede enviar una orden de venta sin lineas de pedidos. Por favor agregue lineas a la orden"))
-        else:
-            for item in self:
-                xfind = item.env['approval.request'].search([('sale_order_id', '=', item.id)])
-                is_company =  item.env['res.company'].search([('partner_id', '=', item.partner_id.id)])
-                if len(xfind) > 0:
-                    for line in xfind:
-                        if line.request_status == 'approved':
-                            item.is_approved = True
-                        else:
-                            item.is_approved = False
-                elif len(is_company) > 0:
-                    item.is_approved = True
-                elif self.payment_condition_id.name in ('contado', 'Contado', 'CONTADO'):
-                    item.is_approved = True
-                else:
-                    item.is_approved = False
-                if item.is_approved:
-                    super(SaleOrderApproval, self)._action_confirm()
-                else:
-                    raise ValidationError(_("Cannot confirm until an approval request is approved for this budget."))
+
+    # def _action_confirm(self):
+    #     if not self.order_line:
+    #         raise UserError(_("No puede enviar una orden de venta sin lineas de pedidos. Por favor agregue lineas a la orden"))
+    #     else:
+    #         for item in self:
+    #             xfind = item.env['approval.request'].search([('sale_order_id', '=', item.id)])
+    #             is_company =  item.env['res.company'].search([('partner_id', '=', item.partner_id.id)])
+    #             if len(xfind) > 0:
+    #                 for line in xfind:
+    #                     if line.request_status == 'approved':
+    #                         item.is_approved = True
+    #                     else:
+    #                         item.is_approved = False
+    #             elif len(is_company) > 0:
+    #                 item.is_approved = True
+    #             elif self.payment_condition_id.name in ('contado', 'Contado', 'CONTADO'):
+    #                 item.is_approved = True
+    #             else:
+    #                 item.is_approved = False
+    #             if item.is_approved:
+    #                 super(SaleOrderApproval, self)._action_confirm()
+    #             else:
+    #                 raise ValidationError(_("Cannot confirm until an approval request is approved for this budget."))
+
+    @api.onchange('payment_condition_id')
+    def paymnet_condition_onchange(self):
+        for order in self:
+            if order.payment_condition_id.name == 'Contado':
+                order.is_contado = True
+            else:
+                order.is_contado = False
 
     def approvals_request_sale(self):
         if not self.order_line:

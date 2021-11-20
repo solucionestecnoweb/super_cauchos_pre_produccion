@@ -126,8 +126,9 @@ class AccountMove(models.Model):
             ejecuta="si"
 
         if ejecuta=="si":
-            diario = self.env['account.journal'].search([('tipo_doc','=',tipo_doc),('type','=',typo)])
+            diario = self.env['account.journal'].search([('tipo_doc','=',tipo_doc),('type','=',typo)],limit=1)
         if move_type=="entry":
+
             diario=journal
         #raise UserError(_('journal = %s')%diario)
         # ****** FIN CODINO NUEVO***************************

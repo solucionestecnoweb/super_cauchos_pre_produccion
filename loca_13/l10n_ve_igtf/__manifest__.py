@@ -14,7 +14,7 @@
     'website': 'http://soluciones-tecno.com/',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account'],
+    'depends': ['base','account','l10n_ve_currency_rate'],
 
     # always loaded
     'data': ['vista/res_company_view.xml',

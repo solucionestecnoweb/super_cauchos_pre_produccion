@@ -28,11 +28,20 @@ _logger = logging.getLogger(__name__)
 
 class CustomerPortal(CustomerPortal):
 
-	@http.route(['/invoice/report_html/impress/<int:invoice>'], type='http', auth="public", website=True)
-	def portal_my_invoice_report_html(self, invoice=None, **post):
+	@http.route(['/invoice/report_html/impress/<int:type>/<int:invoice>'], type='http', auth="public", website=True)
+	def portal_my_invoice_report_html(self, invoice=None,type=None, **post):
 		invoice_id = request.env['account.move'].sudo().search([
 			('id', '=', invoice)
 		])
 		values = self._prepare_portal_layout_values()
 		values.update({'o': invoice_id})
-		return request.render("account_move_extend_fields_reports.invoice_report_html_impress", values)
+		if invoice_id.company_id.paperformat == 'letter':
+			if type == 2:
+				return request.render("account_move_extend_fields_reports.account_move_invoice_extend_letter_usd", values)
+			else :
+				return request.render("account_move_extend_fields_reports.account_move_invoice_extend_letter_bs", values)
+		else: 
+			if type == 2:
+    				return request.render("account_move_extend_fields_reports.account_move_invoice_extend_half_letter_usd", values)
+			else :
+				return request.render("account_move_extend_fields_reports.account_move_invoice_extend_half_letter_bs", values)

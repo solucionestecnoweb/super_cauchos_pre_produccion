@@ -11,7 +11,6 @@
         'security/ir.model.access.csv',
         'data/prorrateo_sequence.xml',
         'views/prorrateo_iva_views.xml',
-        'views/res_company.xml',
         # 'views/wizard_prorrateo_iva_reporte.xml',
         'reports/prorrateo_iva_reporte.xml',
         ],

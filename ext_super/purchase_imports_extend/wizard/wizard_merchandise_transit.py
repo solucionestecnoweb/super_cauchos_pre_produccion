@@ -31,7 +31,7 @@ class MerchandiseTransitTemp(models.Model):
     pronto_pago = fields.Char()
     super_promo = fields.Char()
     c_apartada = fields.Float()
-    seller_ids = fields.Many2many(comodel_name='res.partner')
+    amount_ids = fields.Many2many(comodel_name='seller.amount')
     c_disponible = fields.Float()
     moneda_id = fields.Many2one(comodel_name='res.currency')
     fecha_planeada = fields.Datetime()
@@ -53,7 +53,13 @@ class MerchandiseTransitTemp(models.Model):
     #     purchases.pronto_pago = self.pronto_pago
     #     purchases.super_promo = self.super_promo
     #     purchases.date_planned = self.fecha_planeada
-    
+
+class SellerAmount(models.TransientModel):
+    _name = 'seller.amount'
+
+    seller_id = fields.Many2one(comodel_name='res.partner')
+    amount = fields.Float(string='amount')
+      
 class WizardMerchandiseTransit(models.TransientModel):
     _name = 'wizard.merchandise.transit'
 
@@ -82,42 +88,25 @@ class WizardMerchandiseTransit(models.TransientModel):
             ('date_order', '<=', self.date_to),
             ('state', 'in', ('draft', 'sent', 'purchase')),
             ('qty_received', '=', 0),
-            ('company_id.imports_company', '=', True)
+            ('company_id.imports_company', '=', True),
+            ('order_id.purchase_type', '=', 'international')
         ])
         return xfind
 
     def get_data(self):
         t = self.env['temp.merchandise.transit']
+        q = self.env['seller.amount']
         t.search([]).unlink()
         product = ''
         cantidad = 0
         cantidad_dis = 0
-        sellers = []
+        amounts = []
         regs = len(self.get_merchandise())
         for item in self.get_merchandise().sorted(key= lambda x: x.product_id.id):
             regs -= 1
             if product != item.product_id.id:
-                if product != '':
-                    values = {
-                        'compra_id': orden,
-                        'cantidad': cantidad,
-                        'unidades_id': unidades,
-                        'pr': pr,
-                        'producto_id': product,
-                        'modelo': modelo,
-                        'precio': precio,
-                        'pronto_pago': pronto_pago,
-                        'super_promo': super_promo,
-                        'c_apartada': cantidad_apa,
-                        'seller_ids': sellers,
-                        'c_disponible': (cantidad_dis - cantidad_apa),
-                        'moneda_id': moneda,
-                        'fecha_planeada': fecha_plan,
-                    }
-                    t.create(values)
-                    cantidad = 0
-                    cantidad_dis = 0
-                    sellers = []
+                
+                product = item.product_id.id
                 orden = item.order_id.id
                 unidades = item.product_uom.id
                 pr = item.pr
@@ -128,37 +117,70 @@ class WizardMerchandiseTransit(models.TransientModel):
                 cantidad_apa = item.apart_to_seller
                 moneda = item.currency_id.id
                 fecha_plan = item.date_planned
-                product = item.product_id.id
+
+                ### Cantidad
+                cfind = self.env['purchase.order.line'].sudo().search([
+                    ('date_order', '>=', self.date_from),
+                    ('date_order', '<=', self.date_to),
+                    ('state', 'in', ('draft', 'sent', 'purchase')),
+                    ('qty_received', '=', 0),
+                    ('company_id.imports_company', '=', True),
+                    ('product_id', '=', product),
+                    ('order_id.purchase_type', '=', 'international')
+                ])
+                for line in cfind:
+                    cantidad += item.product_qty
+                    cantidad_dis += item.product_qty
+                    
+                ### Apartado por Vendedor
                 xfind = self.env['sale.order.line'].sudo().search([
                     ('state', 'in', ('draft', 'sent')),
-                    ('product_id', '=', item.product_id.id),
+                    ('product_id', '=', product),
                     ('is_transit_merch', '=', True),
                     ('order_id.seller_id', '!=', False),
                 ])
-                for seller in xfind:
-                    sellers.append(seller.order_id.seller_id.id)
-            
-            cantidad += item.product_qty
-            cantidad_dis += item.product_qty
-            
-            if regs == 0:
+                seller_n = ''
+                ### Vendedores
+                for seller in xfind.sorted(key=lambda x: x.order_id.seller_id.id):
+                    amount = 0
+                    if seller_n != seller.order_id.seller_id.id:
+                        seller_n = seller.order_id.seller_id.id
+                        ### Cantidad Apartada
+                        sfind = self.env['sale.order.line'].sudo().search([
+                            ('state', 'in', ('draft', 'sent')),
+                            ('product_id', '=', product),
+                            ('is_transit_merch', '=', True),
+                            ('order_id.seller_id', '=', seller_n),
+                        ])
+                        for line in sfind:
+                            amount += line.product_uom_qty
+                        val = {
+                            'seller_id': seller_n,
+                            'amount': amount
+                        }
+                        amounts.append(q.create(val).id)
                 values = {
-                    'compra_id': item.order_id.id,
+                    'compra_id': orden,
                     'cantidad': cantidad,
-                    'unidades_id': item.product_uom.id,
-                    'pr': item.pr,
-                    'producto_id': item.product_id.id,
-                    'modelo': item.product_id.modelo,
-                    'precio': item.price_unit,
-                    'pronto_pago': item.pronto_pago,
-                    'super_promo': item.super_promo,
-                    'c_apartada': item.apart_to_seller,
-                    'seller_ids': sellers,
-                    'c_disponible': cantidad_dis,
-                    'moneda_id': item.currency_id.id,
-                    'fecha_planeada': item.date_planned,
+                    'unidades_id': unidades,
+                    'pr': pr,
+                    'producto_id': product,
+                    'modelo': modelo,
+                    'precio': precio,
+                    'pronto_pago': pronto_pago,
+                    'super_promo': super_promo,
+                    'c_apartada': cantidad_apa,
+                    'amount_ids': amounts,
+                    'c_disponible': (cantidad_dis - cantidad_apa),
+                    'moneda_id': moneda,
+                    'fecha_planeada': fecha_plan,
                 }
                 t.create(values)
+                cantidad = 0
+                cantidad_dis = 0
+                amounts = []
+            
+            
         self.line_ids = t.search([])
         
     def show_list(self):

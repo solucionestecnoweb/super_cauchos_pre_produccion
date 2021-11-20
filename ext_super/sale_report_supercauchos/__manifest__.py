@@ -10,6 +10,7 @@
         'views/res_users_view_extend.xml',
         'report/sale_order_budget_extend.xml',
         'report/sale_order_extend.xml',
+        'report/sale_order_budget.xml',
     ],
     'installable': True,
     'auto_install': False,

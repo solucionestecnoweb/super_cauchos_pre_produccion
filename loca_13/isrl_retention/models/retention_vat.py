@@ -66,19 +66,19 @@ class RetentionVat(models.Model):
         #nro_doc=self.partner_id.vat
         busca_partner = self.env['res.partner'].search([('id','=',aux)])
         for det in busca_partner:
-            tipo_doc=busca_partner.doc_type
-            nro_doc=str(busca_partner.vat)
-        nro_doc=nro_doc.replace('V','')
-        nro_doc=nro_doc.replace('v','')
-        nro_doc=nro_doc.replace('E','')
-        nro_doc=nro_doc.replace('e','')
-        nro_doc=nro_doc.replace('G','')
-        nro_doc=nro_doc.replace('g','')
-        nro_doc=nro_doc.replace('J','')
-        nro_doc=nro_doc.replace('j','')
-        nro_doc=nro_doc.replace('P','')
-        nro_doc=nro_doc.replace('p','')
-        nro_doc=nro_doc.replace('-','')
+            tipo_doc=det.doc_type
+            nro_doc=str(det.vat)
+        rif=nro_doc.replace('V','')
+        rif=nro_doc.replace('v','')
+        rif=nro_doc.replace('E','')
+        rif=nro_doc.replace('e','')
+        rif=nro_doc.replace('G','')
+        rif=nro_doc.replace('g','')
+        rif=nro_doc.replace('J','')
+        rif=nro_doc.replace('j','')
+        rif=nro_doc.replace('P','')
+        rif=nro_doc.replace('p','')
+        #rif=nro_doc.replace('-','')
         
         if tipo_doc=="v":
             tipo_doc="V"
@@ -92,7 +92,7 @@ class RetentionVat(models.Model):
             tipo_doc="P"
         if tipo_doc=="c":
             tipo_doc="C"
-        resultado=str(tipo_doc)+"-"+str(nro_doc)
+        resultado=str(tipo_doc)+"-"+str(rif)
         return resultado
         #raise UserError(_('cedula: %s')%resultado)
         

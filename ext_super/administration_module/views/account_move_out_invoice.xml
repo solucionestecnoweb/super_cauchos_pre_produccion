@@ -8,11 +8,11 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="move_id"/>
+                <field name="nro_doc"/>
                 <field name="date"/>
-                <field name="date_maturity" optional="hide"/>
                 <field name="journal_id"/>
                 <field name="account_id"/>
-                <field name="exp_date_today"/>
+                <field name="date_maturity"/>
                 <field name="delay_1_30"/>
                 <field name="delay_31_60"/>
                 <field name="delay_61_90"/>
@@ -23,6 +23,7 @@
                 <field name="rate" optional="show"/>
                 <field name="amount_payed" optional="show"/>
                 <field name="amount_payed_usd" optional="show"/>
+                <field name="exp_date_today" invisible="1"/>
                 <field name="seller_id" invisible="1"/>
                 <field name="seller_true" invisible="1"/>
             </tree>
@@ -49,8 +50,6 @@
         <field name="domain">[
         ('display_type', 'not in', ('line_section', 'line_note')), 
         ('move_id.state', '=', 'posted'), 
-        ('move_id.type', 'in', ('out_invoice', 'entry')), 
-        ('move_id.journal_id.type', 'in', ('bank', 'sale')), 
         ('amount_residual', '!=', 0), 
         ('account_id.internal_type', '=', 'receivable'),
         ('full_reconcile_id', '=', False), 

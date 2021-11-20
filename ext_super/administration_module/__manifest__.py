@@ -6,7 +6,7 @@
     'maintainer': 'OasisConsultora',
     'website': 'oasisconsultora.com',
     'license': 'AGPL-3',
-    'depends': ['account', 'stock', 'sale', 'isrl_retention', 'account_promotions'],
+    'depends': ['account', 'stock', 'sale', 'isrl_retention', 'account_promotions', 'ext_campo_lineas__asientos'],
     'data': [
         'views/administration_menu_items.xml',
         'views/account_move_out_invoice.xml',

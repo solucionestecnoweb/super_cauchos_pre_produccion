@@ -14,4 +14,4 @@ import time
 class ResCompanyPaperFormat(models.Model):
     _inherit = 'res.company'
 
-    paperformat = fields.Selection(string='Invoice Format', selection=[('letter', 'Letter'), ('half', 'Half Letter')], default='letter')
+    paperformat = fields.Selection(string='Invoice Format', selection=[('letter', 'Multirepuestos'), ('half', 'Supercauchos'), ('long_letter', 'Matrix')], default='letter')

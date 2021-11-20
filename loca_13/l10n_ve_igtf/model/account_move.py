@@ -21,6 +21,8 @@ class AccountMove(models.Model):
     monto_anticipo = fields.Monetary(string='Anticipo Disponible', compute='_compute_monto')
     payment_ids = fields.Many2many('account.payment', string='Anticipos')
     usar_anticipo = fields.Boolean(defaul=False)
+    es_igtf = fields.Boolean(default=False)
+    payment_origen_igtf_id = fields.Many2one('account.payment', string='Pogo origen para el igtf.')
 
     #rel_field = fields.Char(string='Name', related='payment_id.amount')
 
@@ -337,7 +339,7 @@ class AccountMove(models.Model):
             self.env['account.partial.reconcile'].create(value)
 
             # NUEVO CODIGO PARA CONCILIAR MOVIMIENTOS SECUNDARIOS 
-            id_payment.id
+            """id_payment.id
             busca_line_mov3 = self.env['account.move.line'].search([('payment_id','=',id_payment.id),('account_internal_type','=',type_internal),('parent_state','!=','cancel')])
             #raise UserError(_('valor = %s')%id_payment)
             for det_line_move3 in busca_line_mov3:
@@ -369,7 +371,7 @@ class AccountMove(models.Model):
             'max_date':self.date,
             'consi_secu_move_id':self.id,
             }
-            self.env['account.partial.reconcile'].create(value)
+            self.env['account.partial.reconcile'].create(value)"""
             #raise UserError(_('value = %s')%self.env['account.partial.reconcile'].create(value))
 
 #************ funcionpara que funcione en odoo sh *************
