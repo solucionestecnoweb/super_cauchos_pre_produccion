@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
+from itertools import product
 import json
 from datetime import datetime, timedelta
 import base64
@@ -58,6 +59,28 @@ class InventarioProductos(models.Model):
 	deote = fields.Date(string='Fecha de Fabricación')
 	physical_count = fields.Float(string='Conteo Físico')
 	
+	@api.onchange('modelo','iva','type_cauchos','tarps','load_speed','service_in','filler','brand_id','group_id','qty_hq','deote','physical_count')
+	def values_onchange(self):
+		self.update_values()
+
+	@api.constrains('modelo','iva','type_cauchos','tarps','load_speed','service_in','filler','brand_id','group_id','qty_hq','deote','physical_count')
+	def values_constrains(self):
+		self.update_values()
+
+	def update_values(self):
+		product = self.env['product.product'].search([('product_tmpl_id', '=', self.id)], limit=1)
+		product.modelo = self.modelo
+		product.iva = self.iva
+		product.type_cauchos = self.type_cauchos
+		product.tarps = self.tarps
+		product.load_speed = self.load_speed
+		product.service_in = self.service_in
+		product.filler = self.filler
+		product.brand_id = self.brand_id.id
+		product.group_id = self.group_id.id
+		product.qty_hq = self.qty_hq
+		product.deote = self.deote
+		product.physical_count = self.physical_count
 
 class MarcasProductos(models.Model):
 	_name = 'product.brand'

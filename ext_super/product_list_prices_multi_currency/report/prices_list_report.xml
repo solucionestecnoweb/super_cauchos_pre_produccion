@@ -30,19 +30,25 @@
                         </div>
                         <div class="col-4 text-center"><br/>
                             <b style="font-size:20px;">Prices List</b><br/>
-                            <b style="font-size:14px;" t-if="o.warehouse_id">Localizaciones</b><br/>
-                            <b style="font-size:12px;">
-                            <t t-set="ware" t-value="len(o.warehouse_id)"/>
-                            <t t-foreach="o.warehouse_id" t-as="item">
-                                <t t-if="ware == 1" t-esc="item.display_name"><br/></t>
-                                <t t-elif="ware > 1"> <t t-esc="item.display_name"/>, </t>
-                                <t t-set="ware" t-value="ware -1"/>
-                            </t>
-                            </b>
                         </div>
                         <div class="col-4 text-right">
                             <b style="font-size:12px;">Page <span class="page" style="font-size:12px;"/> / <span class="topage" style="font-size:12px;"/></b><br/>
                             <b style="font-size:12px;" t-field="o.date_now"></b>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center"><br/>
+                            <b style="font-size:14px;" t-if="o.warehouse_id">Localizaciones</b><br/>
+                            <b style="font-size:10px;">
+                                <t t-set="ware" t-value="len(o.warehouse_id)"/>
+                                <t t-foreach="o.warehouse_id" t-as="item">
+                                    <t t-if="ware == 1" t-esc="item.display_name"><br/></t>
+                                    <t t-elif="ware > 1"> <t t-esc="item.display_name"/>, </t>
+                                    <t t-set="ware" t-value="ware -1"/>
+                                </t>
+                            </b>
                         </div>
                     </div>
                 </div>
@@ -71,6 +77,9 @@
                             <t t-set="pages" t-value="len(cat)"/>
                             <t t-foreach="cat" t-as="categ">
                                 <t t-if="len(o._get_products(categ)) > 0">
+                                    <t t-if="o.warehouse_id">
+                                        <br/>
+                                    </t>
                                     <table style="width: 100%;">
                                         <t t-if="len(prices) == 1">
                                             <colgroup>

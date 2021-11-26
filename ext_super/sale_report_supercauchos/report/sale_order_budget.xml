@@ -58,14 +58,14 @@
                         <div class="col-6">
                             <div class="row">
                                 <div class="col-7 text-right">
-                                    <span style="font-size:14px;">Total</span>
+                                    <b style="font-size:20px;">Total</b>
                                 </div>
                                 <div class="col-5 text-right">
                                     <t t-if="o.currency_id.id == 3">
-                                        <b style="font-size:14px;"><t t-esc="o.amount_total / o.rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></b>
+                                        <b style="font-size:20px;"><t t-esc="o.amount_total / o.rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></b>
                                     </t>
                                     <t t-else="">
-                                        <b style="font-size:14px;"><t t-esc="o.amount_total" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></b>
+                                        <b style="font-size:20px;"><t t-esc="o.amount_total" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></b>
                                     </t>
                                 </div>
                             </div>
@@ -117,11 +117,13 @@
                                 <t t-set="fillert" t-value="0"/>
                                 <t t-set="subtotal" t-value="0"/>
                                 <t t-set="total_discount" t-value="0"/>
+                                <t t-set="iva" t-value="0"/>
                                 <!-- Fin variables totales -->
                                 
                                 <tbody>
                                     <!-- Lineas -->
                                     <t t-foreach="o.order_line" t-as="item">
+                                        <t t-if="item.tax_id" t-set="iva" t-value="(item.tax_id[0].amount * item.price_unit) / 100"/>
                                         <t t-if="item.display_type == 'line_section'">
                                             <tr>
                                                 <td name="td_section_line" colspan="99">
@@ -142,13 +144,13 @@
                                                     <span style="font-size:14px;"><t t-esc="item.product_id.default_code"/></span>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span style="font-size:14px;"><t t-esc="item.name"/></span>
+                                                    <span style="font-size:14px;"><t t-esc="item.product_id.name"/></span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span style="font-size:14px;"><t t-esc="round(item.product_uom_qty)"/></span>
                                                 </td>
                                                 <td class="text-right">
-                                                    <span style="font-size:14px;"><t t-esc="item.price_unit / o.rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                    <span style="font-size:14px;"><t t-esc="(item.price_unit + iva) / o.rate" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
                                                 </td>
                                                 <td class="text-right">
                                                     <span style="font-size:14px;"><t t-esc="item.discount" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
@@ -175,13 +177,13 @@
                                                     <span style="font-size:14px;"><t t-esc="item.product_id.default_code"/></span>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span style="font-size:14px;"><t t-esc="item.name"/></span>
+                                                    <span style="font-size:14px;"><t t-esc="item.product_id.name"/></span>
                                                 </td>
                                                 <td class="text-center">
                                                     <span style="font-size:14px;"><t t-esc="round(item.product_uom_qty)"/></span>
                                                 </td>
                                                 <td class="text-right">
-                                                    <span style="font-size:14px;"><t t-esc="item.price_unit" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
+                                                    <span style="font-size:14px;"><t t-esc="item.price_unit + iva" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>
                                                 </td>
                                                 <td class="text-right">
                                                     <span style="font-size:14px;"><t t-esc="item.discount" t-options='{"widget": "float", "decimal_precision": "o.company_id.currency_id"}'/></span>

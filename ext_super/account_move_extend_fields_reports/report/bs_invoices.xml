@@ -399,7 +399,7 @@
                                             <!-- <t t-if="item.discount > 0">
                                                 <t t-set="discount" t-value="discount + ((item.discount * amount) / 100)"/>
                                             </t> -->
-                                            <t t-set="subtotal" t-value="subtotal + item.price_subtotal"/>
+                                            <t t-set="subtotal" t-value="subtotal + (item.price_subtotal * rate)"/>
                                             <t t-set="qty_sell" t-value="qty_sell + item.quantity"/>
                                             <t t-set="net_amount" t-value="net_amount + (item.price_subtotal * rate)"/>
                                         </t>
@@ -903,7 +903,7 @@
                                                 <col span="1" style="width: 60%;"/>
                                             </colgroup> 
                                             <t t-set="factura" t-value="o.env['account.move'].search([('invoice_number', '=', o.ref), ('company_id', '=', o.company_id.id)])"/>
-                                            <t t-set="razon" t-value="o.env['account.move.reversal'].search([('move_id','=',o.reversed_entry_id.id)])"/>
+                                            <t t-set="razon" t-value="o.env['account.move.reversal'].search([('move_id','=',o.reversed_entry_id.id)], limit=1)"/>
                                             <t t-if="o.type in ('out_refund', 'out_receipt') and factura">
                                                 <tr>
                                                     <td class="text-left">
@@ -1351,7 +1351,7 @@
                                             <!-- <t t-if="item.discount > 0">
                                                 <t t-set="discount" t-value="discount + ((item.discount * amount) / 100)"/>
                                             </t> -->
-                                            <t t-set="subtotal" t-value="subtotal + item.price_subtotal"/>
+                                            <t t-set="subtotal" t-value="subtotal + (item.price_subtotal * rate)"/>
                                             <t t-set="qty_sell" t-value="qty_sell + item.quantity"/>
                                             <t t-set="net_amount" t-value="net_amount + (item.price_subtotal * rate)"/>
                                         </t>

@@ -1,0 +1,83 @@
+<odoo>
+    <data>
+
+    <record id="hr_expense_view_form_inherit2" model="ir.ui.view">
+        <field name="name">hr.expense.view.form.inherit</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="proveedor_id"/>
+                <field name="mostrar_libro" string="Mostrar en Libro?"/>
+                <field name="invoice_number" string="Nro Factura" attrs="{'invisible': [('mostrar_libro', '!=',True)],'required':[('mostrar_libro', '=',True)]}"/>
+                <field name="invoice_ctrl_number" string="Nro control" attrs="{'invisible': [('mostrar_libro', '!=',True)],'required':[('mostrar_libro', '=',True)]}" />
+                <field name="rate_aux" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="tasa_personalizada" string="Tasa Personalizada"/>
+                <field name = "rate" string="Tasa" attrs="{'readonly': [('tasa_personalizada', '!=', True)]}"/>
+            </xpath>
+           <xpath expr="//field[@name='invoice_ctrl_number']" position="after">
+                <xpath expr="//field[@name='currency_id']" position="move"/>
+            </xpath>
+            <!--xpath expr="//form[1]/sheet[1]/group[1]" position="after">
+                <notebook name="studio_notebook_1dj1D">
+                  <page string="Registrar Anticipos" name="studio_page_1dj1D">
+                    <group name="studio_group_1dj1D">
+                      <group name="studio_group_1dj1D_left"/>
+                      <group name="studio_group_1dj1D_right"/>
+                    </group>
+                  </page>
+                </notebook>
+            </xpath-->
+        </field>
+    </record>
+
+    <record id="view_hr_expense_sheet_form2" model="ir.ui.view">
+        <field name="name">view.hr.expense.sheet.form</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='expense_line_ids']/tree/field[@name='name']" position="after">
+                <field name="proveedor_id" force_save="1" string="Proveedor"/>
+                <field name="rate" string="Tasa"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='expenses']/group[@name='expense_total']/field[@name='total_amount']" position="after">
+                <field name="total_amount_signed" string="Importe Total ($)"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[not(@name)][1]" position="inside">
+                <page string="Registrar Anticipo" name="studio_page_EqmkH">
+                  <group name="studio_group_EqmkH">
+                    <field name="payment_ids" widget="one2many_list" domain="[('usado','!=',True),('employee_id.id','=',employee_id)]"/>
+                  </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="cuentas_anti_employee" model="ir.ui.view">
+        <field name="name">cuentas.anti.employee</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                <page string="Config. Cuentas Anticipos Empleados" name="studio_page_J8fdN">
+                  <group name="studio_group_J8fdN">
+                    <group name="studio_group_J8fdN_left" string="Cuenta anticipo empleado">
+                        <field name="account_anti_employee_payable_id" string="Cuenta por Pagar" invisible='0'/>
+                    </group>
+                    <group name="studio_group_J8fdN_right" string="Otros">
+                        
+                    </group>
+                  </group>
+                </page>
+            </xpath>
+            
+        </field>
+    </record>
+
+</data>
+
+</odoo>
